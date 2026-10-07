@@ -2639,3 +2639,703 @@ footer a:hover { color: #a78bfa; }
     padding: 5px;
   }
 }
+/* =========================================================
+   🎵 5 NÚT TIKTOK + FACEBOOK (3+2)
+   ========================================================= */
+
+/* TikTok: 5 nút chia 3+2 */
+.tiktok-options {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 7px;
+}
+
+/* 3 nút đầu chiếm 2 cột, 2 nút sau chiếm 3 cột */
+.tiktok-options .tiktok-btn:nth-child(1),
+.tiktok-options .tiktok-btn:nth-child(2),
+.tiktok-options .tiktok-btn:nth-child(3) {
+  grid-column: span 2;
+}
+.tiktok-options .tiktok-btn:nth-child(4),
+.tiktok-options .tiktok-btn:nth-child(5) {
+  grid-column: span 3;
+}
+
+/* Facebook: 5 nút chia 3+2 */
+.facebook-options {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 7px;
+}
+
+.facebook-options .pkg-btn:nth-child(1),
+.facebook-options .pkg-btn:nth-child(2),
+.facebook-options .pkg-btn:nth-child(3) {
+  grid-column: span 2;
+}
+.facebook-options .pkg-btn:nth-child(4),
+.facebook-options .pkg-btn:nth-child(5) {
+  grid-column: span 3;
+}
+
+/* Responsive mobile: 5 nút chia 2+3 hoặc 1 hàng */
+@media (max-width: 560px) {
+  .tiktok-options,
+  .facebook-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .tiktok-options .tiktok-btn,
+  .facebook-options .pkg-btn {
+    grid-column: span 1 !important;
+  }
+}
+/* ===== FORM DỊCH VỤ (TikTok / Facebook) ===== */
+.service-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.service-inputs .link-input,
+.service-inputs .qty-input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.05);
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+
+.service-inputs .link-input:focus,
+.service-inputs .qty-input:focus {
+  border-color: #a855f7;
+  background: rgba(168,85,247,.08);
+}
+
+.service-inputs .link-input::placeholder,
+.service-inputs .qty-input::placeholder {
+  color: rgba(255,255,255,.4);
+}
+
+.service-inputs .qty-input {
+  max-width: 160px;
+}
+
+.service-inputs .total-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(168,85,247,.12);
+  border: 1px solid rgba(168,85,247,.3);
+  font-size: 14px;
+  color: #ddd;
+}
+
+.service-inputs .total-line b {
+  color: #22d3ee;
+  font-size: 17px;
+  font-weight: 800;
+}
+/* =========================================================
+   FORM DỊCH VỤ TIKTOK / FACEBOOK
+   ========================================================= */
+.service-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.service-inputs .link-input,
+.service-inputs .qty-input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.05);
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .2s, background .2s;
+  box-sizing: border-box;
+}
+
+.service-inputs .link-input:focus,
+.service-inputs .qty-input:focus {
+  border-color: #a855f7;
+  background: rgba(168,85,247,.08);
+}
+
+.service-inputs .link-input::placeholder,
+.service-inputs .qty-input::placeholder {
+  color: rgba(255,255,255,.4);
+}
+
+.service-inputs .qty-input {
+  max-width: 100%;
+}
+
+.service-inputs .total-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(168,85,247,.12);
+  border: 1px solid rgba(168,85,247,.3);
+  font-size: 14px;
+  color: #ddd;
+}
+
+.service-inputs .total-line b {
+  color: #22d3ee;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.order-now-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 14px rgba(168,85,247,.35);
+}
+
+.order-now-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(168,85,247,.55);
+}
+
+.order-now-btn:active { transform: translateY(0); }
+/* =========================================================
+   NÚT ĐẶT HÀNG + Ô EXTRA TRONG MODAL
+   ========================================================= */
+.order-now-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 14px;
+  transition: transform .15s, box-shadow .15s;
+  box-shadow: 0 4px 14px rgba(168,85,247,.35);
+}
+.order-now-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(168,85,247,.55);
+}
+.order-now-btn:active { transform: translateY(0); }
+
+/* Ô Link + Số lượng trong modal */
+.service-extra {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(168,85,247,.1);
+  border: 1px solid rgba(168,85,247,.3);
+}
+.service-extra.hidden { display: none; }
+
+.service-extra .extra-label {
+  font-size: 13px;
+  color: #b8b8c8;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.service-extra .extra-input {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.05);
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color .2s, background .2s;
+}
+.service-extra .extra-input:focus {
+  border-color: #a855f7;
+  background: rgba(168,85,247,.15);
+}
+.service-extra .extra-input::placeholder {
+  color: rgba(255,255,255,.4);
+}
+/* Dòng đơn giá trong khung extra */
+.service-extra .extra-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  margin-top: 6px;
+  border-radius: 10px;
+  background: rgba(34,211,238,.12);
+  border: 1px solid rgba(34,211,238,.35);
+  font-size: 14px;
+  color: #ddd;
+  font-weight: 600;
+}
+.service-extra .extra-total b {
+  color: #22d3ee;
+  font-size: 17px;
+  font-weight: 800;
+}
+/* ===== Ô TẢI ẢNH THANH TOÁN ===== */
+.upload-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(34,211,238,.08);
+  border: 1px solid rgba(34,211,238,.3);
+  margin: 6px 0;
+}
+
+.upload-label {
+  font-size: 14px;
+  color: #ddd;
+  font-weight: 600;
+}
+
+.upload-box input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px dashed rgba(34,211,238,.5);
+  background: rgba(255,255,255,.04);
+  color: #fff;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+
+.upload-box input[type="file"]:hover {
+  border-color: #22d3ee;
+  background: rgba(34,211,238,.12);
+}
+
+.upload-box input[type="file"]::file-selector-button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.preview-wrap {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.preview-wrap img {
+  max-width: 100%;
+  max-height: 220px;
+  border-radius: 10px;
+  border: 2px solid rgba(34,211,238,.4);
+}
+
+.preview-wrap.hidden { display: none; }
+
+.remove-img-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(220,38,38,.9);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+}
+.remove-img-btn:hover {
+  background: #dc2626;
+}
+/* =========================================================
+   💬 NÚT ZALO NỔI (FLOATING)
+   ========================================================= */
+.zalo-float {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;          /* 👈 ĐỔI right → left */
+  right: auto;         /* 👈 THÊM dòng này */
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #0068ff, #0084ff);
+  color: #fff !important;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 15px;
+  font-family: inherit;
+  box-shadow: 0 6px 24px rgba(0, 104, 255, .55);
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+  animation: zalo-bounce 2.5s ease-in-out infinite;
+}
+.zalo-float:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 32px rgba(0, 104, 255, .75);
+  animation: none;
+}
+
+.zalo-float .zalo-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.zalo-float .zalo-text {
+  white-space: nowrap;
+}
+
+/* Hiệu ứng sóng lan toả */
+.zalo-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50px;
+  background: rgba(0, 104, 255, .5);
+  animation: zalo-pulse 2s infinite;
+  z-index: -1;
+}
+
+@keyframes zalo-pulse {
+  0%   { transform: scale(1);   opacity: .7; }
+  100% { transform: scale(1.4); opacity: 0;  }
+}
+
+@keyframes zalo-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* Mobile: thu nhỏ lại */
+@media (max-width: 600px) {
+  .zalo-float {
+    bottom: 16px;
+    left: 16px;        /* 👈 ĐỔI right → left */
+    right: auto;       /* 👈 THÊM dòng này */
+    padding: 12px;
+    border-radius: 50%;
+  }
+  .zalo-float .zalo-text { display: none; }
+  .zalo-float .zalo-icon { font-size: 26px; }
+}
+
+/* =========================================================
+   ⚡ LOADING SKELETON
+   ========================================================= */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, .05);
+  border-radius: 12px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, .08) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.4s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Skeleton cho card */
+.skeleton-card {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+}
+
+.skeleton-line {
+  height: 16px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .08);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, .12) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.4s infinite;
+}
+
+.skeleton-line.short  { width: 40%; }
+.skeleton-line.medium { width: 70%; }
+.skeleton-line.full   { width: 100%; }
+
+.skeleton-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .08);
+  position: relative;
+  overflow: hidden;
+}
+.skeleton-icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, .12) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.4s infinite;
+}
+
+.skeleton-btn {
+  height: 42px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .06);
+  margin-top: auto;
+  position: relative;
+  overflow: hidden;
+}
+.skeleton-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, .1) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.4s infinite;
+}
+/* =========================================================
+   🎬 VIDEO INTRO
+   ========================================================= */
+.video-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity .6s ease;
+}
+
+.video-intro.hidden {
+  display: none;
+}
+
+.video-intro.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Nút bỏ qua — góc phải trên */
+.skip-intro {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+  padding: 10px 18px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, .3);
+  background: rgba(0, 0, 0, .5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.skip-intro:hover {
+  background: rgba(255, 255, 255, .15);
+  border-color: rgba(255, 255, 255, .6);
+  transform: scale(1.05);
+}
+
+/* Nút vào shop — giữa màn hình */
+.enter-shop {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  border-radius: 50px;
+  border: none;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 10px 40px rgba(168, 85, 247, .6);
+  transition: transform .2s, box-shadow .2s;
+  animation: enter-shop-bounce 2s ease-in-out infinite;
+}
+
+.enter-shop:hover {
+  transform: translateX(-50%) translateY(-3px) scale(1.05);
+  box-shadow: 0 14px 50px rgba(168, 85, 247, .8);
+  animation: none;
+}
+
+.enter-shop.hidden { display: none; }
+
+.enter-shop-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+@keyframes enter-shop-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(-8px); }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .skip-intro {
+    top: 14px;
+    right: 14px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+  .enter-shop {
+    bottom: 40px;
+    padding: 14px 26px;
+    font-size: 16px;
+  }
+}
+/* =========================================================
+   🔵 ĐĂNG NHẬP GOOGLE
+   ========================================================= */
+.google-login-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.google-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: #fff;
+  color: #1a1a1f;
+  font-size: 14px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, background .2s;
+  box-shadow: 0 4px 14px rgba(0,0,0,.25);
+}
+
+.google-login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  background: #f8f8f8;
+}
+
+.google-login-btn:active {
+  transform: translateY(0);
+}
+
+.google-login-btn:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.google-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #5a5a66;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.google-divider::before,
+.google-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,.1);
+}
