@@ -3195,25 +3195,6 @@ footer a:hover { color: #a78bfa; }
   display: block;
 }
 
-/* Nút bỏ qua — góc phải trên */
-.skip-intro {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 2;
-  padding: 10px 18px;
-  border-radius: 50px;
-  border: 1px solid rgba(255, 255, 255, .3);
-  background: rgba(0, 0, 0, .5);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all .2s;
-}
 
 .skip-intro:hover {
   background: rgba(255, 255, 255, .15);
@@ -3338,4 +3319,307 @@ footer a:hover { color: #a78bfa; }
   flex: 1;
   height: 1px;
   background: rgba(255,255,255,.1);
+}
+/* =========================================================
+   ▶ NÚT PLAY VIDEO INTRO — Bấm để phát có tiếng
+   ========================================================= */
+.start-video-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 42px;
+  border-radius: 60px;
+  border: 2px solid rgba(255, 255, 255, .4);
+  background: rgba(0, 0, 0, .65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .3s;
+  animation: pulse-play 2s ease-in-out infinite;
+}
+
+.start-video-btn:hover {
+  background: rgba(168, 85, 247, .5);
+  border-color: #a855f7;
+  transform: translate(-50%, -50%) scale(1.08);
+  animation: none;
+}
+
+.start-video-btn.hidden {
+  display: none;
+}
+
+.start-video-btn .start-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  padding-left: 6px;
+  box-shadow: 0 10px 40px rgba(168, 85, 247, .7);
+}
+
+@keyframes pulse-play {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%      { transform: translate(-50%, -50%) scale(1.05); }
+}
+
+@media (max-width: 600px) {
+  .start-video-btn {
+    padding: 18px 30px;
+    font-size: 15px;
+  }
+  .start-video-btn .start-icon {
+    width: 54px;
+    height: 54px;
+    font-size: 24px;
+  }
+}
+/* =========================================================
+   🎬 VIDEO INTRO MỚI — Nút loa + Đếm ngược 5s
+   ========================================================= */
+
+
+.sound-toggle:hover {
+  background: rgba(168, 85, 247, .5);
+  border-color: #a855f7;
+  transform: scale(1.1);
+  animation: none;
+}
+
+.sound-toggle.on {
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  border-color: #a855f7;
+  box-shadow: 0 0 30px rgba(168, 85, 247, .7);
+}
+
+@keyframes sound-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, .4); }
+  50%      { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+}
+
+
+
+.countdown-circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, .35);
+  background: rgba(0, 0, 0, .5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: grid;
+  place-items: center;
+  position: relative;
+  box-shadow: 0 0 40px rgba(168, 85, 247, .5);
+}
+
+.countdown-circle::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #22d3ee;
+  border-right-color: #a855f7;
+  animation: countdown-spin 1s linear infinite;
+}
+
+.countdown-circle span {
+  font-size: 42px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.intro-countdown p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .8);
+}
+
+.intro-countdown p b {
+  color: #22d3ee;
+  font-weight: 900;
+}
+
+@keyframes countdown-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes fadeInCountdown {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(.8); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@media (max-width: 600px) {
+  .countdown-circle { width: 90px; height: 90px; }
+  .countdown-circle span { font-size: 34px; }
+  .intro-countdown p { font-size: 13px; }
+  .sound-toggle { width: 46px; height: 46px; font-size: 20px; top: 14px; right: 14px; }
+}
+/* =========================================================
+   🎬 VIDEO INTRO MỚI — Nút loa + Đếm ngược 5s (dưới cùng)
+   ========================================================= */
+
+/* Nút loa — LÙI VÀO TRONG 170px để nhường chỗ nút Bỏ qua */
+.sound-toggle {
+  position: absolute;
+  top: 20px;
+  right: 170px;
+  z-index: 6;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .4);
+  background: rgba(0, 0, 0, .65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+  font-size: 22px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all .25s;
+}
+
+.sound-toggle:hover {
+  background: rgba(168, 85, 247, .5);
+  border-color: #a855f7;
+  transform: scale(1.1);
+}
+
+.sound-toggle.on {
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  border-color: #a855f7;
+  box-shadow: 0 0 30px rgba(168, 85, 247, .7);
+}
+
+/* Nút bỏ qua — góc TRÊN PHẢI */
+.skip-intro {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 6;
+  padding: 10px 18px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, .3);
+  background: rgba(0, 0, 0, .5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.skip-intro:hover {
+  background: rgba(255, 255, 255, .15);
+  border-color: rgba(255, 255, 255, .6);
+  transform: scale(1.05);
+}
+
+.skip-intro.hidden { display: none; }
+
+/* Đếm ngược 5s — DƯỚI CÙNG màn hình */
+.intro-countdown {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  color: #fff;
+  animation: fadeInCountdown .5s ease;
+  pointer-events: none;
+}
+
+.intro-countdown.hidden { display: none; }
+
+.countdown-circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, .35);
+  background: rgba(0, 0, 0, .5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: grid;
+  place-items: center;
+  position: relative;
+  box-shadow: 0 0 40px rgba(168, 85, 247, .5);
+}
+
+.countdown-circle::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #22d3ee;
+  border-right-color: #a855f7;
+  animation: countdown-spin 1s linear infinite;
+}
+
+.countdown-circle span {
+  font-size: 42px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.intro-countdown p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .8);
+}
+
+.intro-countdown p b {
+  color: #22d3ee;
+  font-weight: 900;
+}
+
+@keyframes countdown-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes fadeInCountdown {
+  from { opacity: 0; transform: translateX(-50%) scale(.8); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@media (max-width: 600px) {
+  .countdown-circle { width: 90px; height: 90px; }
+  .countdown-circle span { font-size: 34px; }
+  .intro-countdown p { font-size: 13px; }
+  .sound-toggle { width: 44px; height: 44px; font-size: 20px; top: 14px; right: 140px; }
+  .skip-intro { top: 14px; right: 14px; padding: 8px 14px; font-size: 13px; }
 }
