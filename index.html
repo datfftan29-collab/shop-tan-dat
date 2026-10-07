@@ -5,27 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07070a">
 
-  <!-- SEO -->
   <title>Shop Tấn Đạt — Gói dịch vụ game Liên Quân, Free Fire</title>
   <meta name="description" content="Shop Tấn Đạt — Gói dịch vụ Liên Quân, Free Fire. Hỗ trợ 24/7, thanh toán QR nhanh chóng.">
   <meta name="keywords" content="shop tấn đạt, gói liên quân, gói free fire, dịch vụ game">
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Shop Tấn Đạt — Gói dịch vụ game">
   <meta property="og:description" content="Chọn gói phù hợp, thanh toán nhanh qua QR, hỗ trợ 24/7.">
   <meta property="og:image" content="images/hi.jpg">
   <meta property="og:locale" content="vi_VN">
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Google Identity Services -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="main.css">
 </head>
 <body>
@@ -36,15 +31,23 @@
       id="introVideo"
       class="intro-video"
       playsinline
-      preload="auto">
+      preload="auto"
+      muted>
       <source src="intro.mp4" type="video/mp4">
       Trình duyệt của bạn không hỗ trợ video.
     </video>
 
-    <button id="skipIntro" class="skip-intro" type="button" aria-label="Bỏ qua video">
-      Xem video hoặc Bỏ qua ✕
+    <!-- Nút loa bật/tắt tiếng -->
+    <button id="soundToggle" class="sound-toggle" type="button" aria-label="Bật/tắt tiếng">
+      🔇
     </button>
 
+    <!-- Nút bỏ qua — ẩn ban đầu -->
+    <button id="skipIntro" class="skip-intro hidden" type="button" aria-label="Bỏ qua video">
+      Bỏ qua ✕
+    </button>
+
+    <!-- Nút vào shop -->
     <button id="enterShop" class="enter-shop hidden" type="button">
       <span class="enter-shop-icon">🎮</span>
       <span>Vào Shop</span>
@@ -68,7 +71,7 @@
         <a href="#home">Trang chủ</a>
         <a href="#products">Gói dịch vụ</a>
         <a href="#payment">Thanh toán</a>
-        <a href="#" id="historyBtn">Lịch sử đơn hàng </a>
+        <a href="#" id="historyBtn">Lịch sử đơn hàng</a>
         <a href="#contact">Liên hệ</a>
       </nav>
 
@@ -728,7 +731,6 @@
 
         <div id="orderSummary" class="order-summary"></div>
 
-        <!-- ⚡ CHỈ HIỆN VỚI DỊCH VỤ TIKTOK/FACEBOOK -->
         <div id="serviceExtraFields" class="service-extra hidden">
           <label class="extra-label">🔗 Link video/bài viết:</label>
           <input type="text" id="extraLink" class="extra-input" placeholder="Dán link vào đây...">
@@ -794,20 +796,15 @@
   </div>
 
   <!-- =========================================================
-       🔐 AUTH MODAL
+       🔐 AUTH MODAL — CHỈ GOOGLE LOGIN
        ========================================================= -->
   <div id="authModal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-labelledby="authTitle">
     <div class="auth-card">
       <div class="auth-logo">🎯</div>
       <h2 id="authTitle">Shop Tấn Đạt</h2>
-      <p class="auth-sub">Đăng nhập để tiếp tục mua hàng</p>
+      <p class="auth-sub">Đăng nhập bằng Google để tiếp tục</p>
 
-      <div class="auth-tabs">
-        <button type="button" id="tabLogin"    class="auth-tab active">Đăng nhập</button>
-        <button type="button" id="tabRegister" class="auth-tab">Đăng ký</button>
-      </div>
-
-      <!-- 🔵 ĐĂNG NHẬP GOOGLE -->
+      <!-- CHỈ CÓ NÚT GOOGLE -->
       <div id="googleLoginWrap" class="google-login-wrap">
         <button type="button" id="googleLoginBtn" class="google-login-btn">
           <svg width="20" height="20" viewBox="0 0 48 48">
@@ -818,28 +815,7 @@
           </svg>
           <span>Đăng nhập bằng Google</span>
         </button>
-        <div class="google-divider">
-          <span>hoặc</span>
-        </div>
       </div>
-
-      <!-- Form đăng nhập -->
-      <form id="loginForm" class="auth-form">
-        <input type="tel" name="phone" placeholder="📱 Số điện thoại" inputmode="tel" pattern="^(0|\+84)[0-9]{9,10}$" required autocomplete="tel">
-        <input type="password" name="password" placeholder="🔒 Mật khẩu" minlength="6" required autocomplete="current-password">
-        <button type="submit" class="auth-submit">🚀 Đăng nhập</button>
-        <p class="auth-msg" id="loginMsg"></p>
-      </form>
-
-      <!-- Form đăng ký -->
-      <form id="registerForm" class="auth-form hidden">
-        <input type="text" name="name" placeholder="👤 Họ và tên" minlength="2" required autocomplete="name">
-        <input type="tel" name="phone" placeholder="📱 Số điện thoại" inputmode="tel" pattern="^(0|\+84)[0-9]{9,10}$" required autocomplete="tel">
-        <input type="password" name="password" placeholder="🔒 Mật khẩu (tối thiểu 6 ký tự)" minlength="6" required autocomplete="new-password">
-        <input type="password" name="confirm" placeholder="🔒 Nhập lại mật khẩu" minlength="6" required autocomplete="new-password">
-        <button type="submit" class="auth-submit">✍️ Đăng ký ngay</button>
-        <p class="auth-msg" id="registerMsg"></p>
-      </form>
 
       <p class="auth-note">Bằng việc đăng nhập, bạn đồng ý với điều khoản của Shop Tấn Đạt.</p>
     </div>
@@ -952,7 +928,6 @@
       </div>
 
       <div id="historyList" class="history-list">
-        <!-- JS sẽ render danh sách ở đây -->
       </div>
 
       <div class="history-actions">
