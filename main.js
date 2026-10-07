@@ -1514,8 +1514,8 @@ function clearAllHistory() {
 /* =========================================================
    🔵 ĐĂNG NHẬP GOOGLE
    ========================================================= */
-const GOOGLE_CLIENT_ID = '412641922057-bn8sap1lir6fsjhpbjgsp1mm4h8fh.apps.googleusercontent.com';
 
+const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.googleusercontent.com';
 (function initGoogleLogin() {
   const btn = document.getElementById('googleLoginBtn');
   if (!btn) {
