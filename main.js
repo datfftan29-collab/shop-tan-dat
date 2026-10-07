@@ -296,7 +296,7 @@ function handleNotifyLater() {
 })();
 
 /* =========================================================
-   📤 GỬI ĐƠN HÀNG QUA TELEGRAM
+   📤 GỬI ĐƠN HÀNG QUA TELEGRAM (TEXT)
    ========================================================= */
 async function sendToTelegram(orderData) {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
@@ -363,6 +363,55 @@ async function sendToTelegram(orderData) {
 }
 
 /* =========================================================
+   📸 GỬI ẢNH THANH TOÁN QUA TELEGRAM
+   ========================================================= */
+async function sendPhotoToTelegram(file, orderData) {
+  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    return { ok: false, error: 'missing_config' };
+  }
+  if (!file) {
+    return { ok: false, error: 'no_file' };
+  }
+
+  const caption =
+    `📸 <b>ẢNH THANH TOÁN</b>\n` +
+    `━━━━━━━━━━━━━━━━━━\n` +
+    `📦 <b>Sản phẩm:</b> ${orderData.productName}\n` +
+    `💰 <b>Số tiền:</b> ${formatVND(orderData.price)}\n` +
+    `📞 <b>Người nhận:</b> ${orderData.buyerName}\n` +
+    `📱 <b>SĐT:</b> ${orderData.phone}\n` +
+    `💳 <b>Ngân hàng:</b> ${orderData.method}`;
+
+  const formData = new FormData();
+  formData.append('chat_id', TELEGRAM_CHAT_ID);
+  formData.append('photo', file);
+  formData.append('caption', caption);
+  formData.append('parse_mode', 'HTML');
+
+  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (data.ok) {
+      console.log('✅ Đã gửi ảnh thanh toán qua Telegram');
+      return { ok: true };
+    } else {
+      console.error('❌ Telegram sendPhoto lỗi:', data);
+      return { ok: false, error: data.description || 'unknown' };
+    }
+  } catch (err) {
+    console.error('❌ Lỗi gửi ảnh:', err);
+    return { ok: false, error: err.message };
+  }
+}
+
+/* =========================================================
    1. NĂM HIỆN TẠI Ở FOOTER
    ========================================================= */
 const yearEl = $('#year');
@@ -417,7 +466,6 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   if (!audio || !widget) return;
 
   const PLAYLIST = [
-    
     { title: 'Parada',     artist: 'Shop Tấn Đạt', src: 'parada.mp3'   },
     { title: 'Nhạc Đóa quỳnh lan',     artist: 'Shop Tấn Đạt', src: 'doaquynhlan.mp3'    },
     { title: 'Nhạc Ngày mình chia tay',     artist: 'Shop Tấn Đạt', src: 'ngayminhctay.mp3'    },
@@ -519,7 +567,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   });
 
   renderPlaylist();
-  loadTrack(7, false);
+  loadTrack(3, false);
 
   /* TỰ ĐỘNG PHÁT NHẠC khi khách tương tác lần đầu */
   let autoplayTried = false;
@@ -690,6 +738,17 @@ $$('[data-copy]').forEach(btn => {
   const copyAccBtn    = $('#copyAcc');
   const confirmBtn    = $('#confirmBtn');
 
+  /* Ô extra (Link + Số lượng) trong modal */
+  const extraFields = $('#serviceExtraFields');
+  const extraLink   = $('#extraLink');
+  const extraQty    = $('#extraQty');
+
+  /* Ô tải ảnh thanh toán */
+  const paymentProof = $('#paymentProof');
+  const previewWrap  = $('#previewWrap');
+  const previewImg   = $('#previewImg');
+  const removeImg    = $('#removeImg');
+
   if (!modal || !form) return;
 
   const ACCOUNTS = {
@@ -709,8 +768,83 @@ $$('[data-copy]').forEach(btn => {
 
   let currentProduct = null;
   let currentMethod  = 'bank';
+  let extraServiceInfo = null;
 
+  /* ====== HÀM XỬ LÝ Ô EXTRA ====== */
+  function hideExtraFields() {
+    if (extraFields) extraFields.classList.add('hidden');
+    if (extraLink)   extraLink.value = '';
+    if (extraQty)    extraQty.value  = 1000;
+    const extraTotalEl = document.getElementById('extraTotal');
+    if (extraTotalEl) extraTotalEl.textContent = '0đ';
+    extraServiceInfo = null;
+  }
+
+  function showExtraFields(unit, pricePer1000) {
+    if (!extraFields) return;
+    extraFields.classList.remove('hidden');
+    if (extraLink) extraLink.value = '';
+    if (extraQty)  extraQty.value  = 1000;
+
+    extraServiceInfo = { unit, pricePer1000 };
+
+    function recalcExtra() {
+      if (!currentProduct || !extraServiceInfo) return;
+      const qty = Number(extraQty.value) || 0;
+      const total = (qty / 1000) * extraServiceInfo.pricePer1000;
+      currentProduct.price = total;
+      currentProduct.duration = qty.toLocaleString('vi-VN') +
+        (extraServiceInfo.unit ? ' ' + extraServiceInfo.unit : '');
+      renderSummary();
+
+      const extraTotalEl = document.getElementById('extraTotal');
+      if (extraTotalEl) {
+        extraTotalEl.textContent = total.toLocaleString('vi-VN') + 'đ';
+      }
+    }
+
+    if (extraQty) extraQty.oninput = recalcExtra;
+    recalcExtra();
+  }
+
+  /* ====== XỬ LÝ ẢNH THANH TOÁN ====== */
+  if (paymentProof) {
+    paymentProof.addEventListener('change', () => {
+      const file = paymentProof.files[0];
+      if (!file) {
+        previewWrap?.classList.add('hidden');
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        showToast('⚠️ Vui lòng chọn file ảnh.', 'error');
+        paymentProof.value = '';
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('⚠️ Ảnh quá lớn (tối đa 5MB).', 'error');
+        paymentProof.value = '';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        if (previewImg) previewImg.src = ev.target.result;
+        previewWrap?.classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  removeImg?.addEventListener('click', () => {
+    if (paymentProof) paymentProof.value = '';
+    previewWrap?.classList.add('hidden');
+    if (previewImg) previewImg.src = '';
+  });
+
+  /* ====== NÚT pkg-btn cũ (Liên Quân, FF, 8 Ball, Play Together) ====== */
   $$('.pkg-btn').forEach(btn => {
+    if (btn.classList.contains('order-now-btn')) return;
+
     btn.addEventListener('click', () => {
       const parent = btn.closest('.packages');
       parent?.querySelectorAll('.pkg-btn').forEach(b => {
@@ -729,6 +863,7 @@ $$('[data-copy]').forEach(btn => {
         duration: btn.dataset.duration
       };
 
+      hideExtraFields();
       renderSummary();
       setMethod('bank');
 
@@ -742,6 +877,38 @@ $$('[data-copy]').forEach(btn => {
     });
   });
 
+  /* ====== NÚT "ĐẶT HÀNG" MỚI cho TikTok/Facebook ====== */
+  $$('.order-now-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const serviceForm = btn.closest('.service-form');
+      if (!serviceForm) return;
+
+      const pricePer1000 = Number(serviceForm.dataset.price) || 0;
+      const serviceName  = btn.dataset.name || 'Dịch vụ';
+      const unit         = btn.dataset.unit || '';
+
+      currentProduct = {
+        id:       'svc-' + Date.now(),
+        name:     serviceName,
+        price:    pricePer1000,
+        duration: '1.000' + (unit ? ' ' + unit : '')
+      };
+
+      renderSummary();
+      setMethod('bank');
+
+      const user = getCurrentUser();
+      if (user) {
+        if (form.buyerName) form.buyerName.value = user.name;
+        if (form.phone)     form.phone.value     = user.phone;
+      }
+
+      modal.classList.remove('hidden');
+      showExtraFields(unit, pricePer1000);
+    });
+  });
+
+  /* ====== RENDER ORDER SUMMARY ====== */
   function renderSummary() {
     if (!currentProduct) return;
     orderSummary.innerHTML = '';
@@ -793,6 +960,12 @@ $$('[data-copy]').forEach(btn => {
     form.reset();
     paymentBox.innerHTML = '';
     currentProduct = null;
+    hideExtraFields();
+
+    /* Reset ảnh */
+    if (paymentProof) paymentProof.value = '';
+    previewWrap?.classList.add('hidden');
+    if (previewImg) previewImg.src = '';
   }
   closeBtn.addEventListener('click', closeModal);
   cancelBtn.addEventListener('click', closeModal);
@@ -803,26 +976,57 @@ $$('[data-copy]').forEach(btn => {
     if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
   });
 
+  /* ====== SUBMIT ĐƠN ====== */
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const name  = form.buyerName.value.trim();
     const phone = form.phone.value.trim();
-    const note  = form.note.value.trim();
+    let   note  = form.note ? form.note.value.trim() : '';
 
     if (name.length < 2) {
-      showToast('Vui lòng nhập họ tên.', 'error');
+      showToast('⚠️ Vui lòng nhập họ tên đầy đủ.', 'error');
       form.buyerName.focus();
       return;
     }
     if (!/^(0|\+84)[0-9]{9,10}$/.test(phone)) {
-      showToast('Số điện thoại không hợp lệ.', 'error');
+      showToast('⚠️ Số điện thoại không hợp lệ.', 'error');
       form.phone.focus();
       return;
     }
     if (!currentProduct) {
       showToast('Vui lòng chọn gói dịch vụ.', 'error');
       return;
+    }
+
+    /* ⚡ BẮT BUỘC PHẢI CÓ ẢNH THANH TOÁN */
+    const fileInput = document.getElementById('paymentProof');
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+      showToast('⚠️ Vui lòng tải ảnh thanh toán lên trước.', 'error');
+      fileInput?.focus();
+      return;
+    }
+    const proofFile = fileInput.files[0];
+
+    /* Validate Link + Số lượng nếu là TikTok/Facebook */
+    if (extraServiceInfo) {
+      const link = (extraLink?.value || '').trim();
+      const qty  = Number(extraQty?.value) || 0;
+
+      if (!link) {
+        showToast('⚠️ Vui lòng nhập link video/bài viết.', 'error');
+        extraLink?.focus();
+        return;
+      }
+      if (qty < 1) {
+        showToast('⚠️ Vui lòng nhập số lượng hợp lệ.', 'error');
+        extraQty?.focus();
+        return;
+      }
+
+      const unitTxt = extraServiceInfo.unit ? ' ' + extraServiceInfo.unit : '';
+      const extraInfo = `Link: ${link} | Số lượng: ${qty.toLocaleString('vi-VN')}${unitTxt}`;
+      note = note ? extraInfo + ' | ' + note : extraInfo;
     }
 
     const info = ACCOUNTS[currentMethod];
@@ -841,17 +1045,19 @@ $$('[data-copy]').forEach(btn => {
     confirmBtn.disabled = true;
     confirmBtn.textContent = '⏳ Đang gửi...';
 
-    const result = await sendToTelegram(orderData);
+    /* Gửi Telegram: tin nhắn chữ + ảnh */
+    const textResult = await sendToTelegram(orderData);
+    const photoResult = await sendPhotoToTelegram(proofFile, orderData);
 
     confirmBtn.disabled = false;
     confirmBtn.textContent = originalBtnText;
 
-    if (result.ok) {
+    if (textResult.ok && photoResult.ok) {
       saveOrderToHistory(orderData);
       showToast('✅ Đã gửi đơn thành công! Tấn Đạt sẽ liên hệ sớm.');
       setTimeout(() => closeModal(), 1500);
     } else {
-      console.error('Lỗi:', result.error);
+      console.error('Lỗi:', textResult.error, photoResult.error);
       showToast('❌ Không gửi được đơn. Vui lòng liên hệ Zalo: 0345085074', 'error', 4000);
       setTimeout(() => closeModal(), 2000);
     }
@@ -1166,4 +1372,258 @@ function clearAllHistory() {
       closeHistoryModal();
     }
   });
+})();
+/* =========================================================
+   ⚡ LOADING SKELETON — Hiện skeleton khi trang đang tải
+   ========================================================= */
+(function initSkeleton() {
+  /* Chạy khi DOM đã sẵn sàng — nhưng trước khi mọi thứ render xong */
+  const grids = document.querySelectorAll(
+    '.tiktok-grid, .facebook-grid, .product-grid'
+  );
+
+  if (!grids.length) return;
+
+  /* Tạo skeleton cho mỗi card đang có */
+  grids.forEach(grid => {
+    const cards = grid.children;
+    Array.from(cards).forEach(card => {
+      card.dataset.originalContent = card.innerHTML;
+    });
+  });
+
+  /* Sau khi mọi thứ load xong (bao gồm ảnh, CSS) → fade in thật */
+  window.addEventListener('load', () => {
+    /* Xóa class skeleton nếu có */
+    document.querySelectorAll('.skeleton').forEach(el => {
+      el.classList.remove('skeleton');
+    });
+  });
+})();
+
+/* =========================================================
+   ⚡ HIỆU ỨNG LOADING CHO ẢNH
+   ========================================================= */
+(function initImageLazy() {
+  const images = document.querySelectorAll('img[loading="lazy"]');
+  /* Không cần làm gì — browser tự lo */
+})();
+
+/* =========================================================
+   💬 NÚT ZALO NỔI — ẨN KHI Ở GẦN CUỐI TRANG
+   (Tránh che footer)
+   ========================================================= */
+(function initZaloFloat() {
+  const zalo = document.querySelector('.zalo-float');
+  if (!zalo) return;
+
+  let lastScroll = 0;
+  let hideTimer = null;
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    const scrollBottom = currentScroll + window.innerHeight;
+    const docHeight = document.documentElement.scrollHeight;
+
+    /* Nếu cuộn gần đáy (trong 300px cuối) → làm mờ nhẹ */
+    if (docHeight - scrollBottom < 300) {
+      zalo.style.opacity = '0.4';
+    } else {
+      zalo.style.opacity = '1';
+    }
+
+    lastScroll = currentScroll;
+  }, { passive: true });
+})();
+/* =========================================================
+   🎬 VIDEO INTRO — Hiện video khi khách vào web
+   ========================================================= */
+(function initVideoIntro() {
+  const intro = document.getElementById('videoIntro');
+  const video = document.getElementById('introVideo');
+  const skipBtn = document.getElementById('skipIntro');
+  const enterBtn = document.getElementById('enterShop');
+
+  if (!intro || !video) return;
+
+
+  /* ==== 2. KHÓA SCROLL KHI ĐANG XEM VIDEO ==== */
+  document.body.style.overflow = 'hidden';
+
+  /* ==== 3. TỰ ĐỘNG PHÁT VIDEO ==== */
+  video.volume = 0.8;
+  video.play().catch(err => {
+    console.warn('Không autoplay được video:', err);
+    /* Nếu browser chặn autoplay → hiện nút bấm để user bấm */
+    video.muted = true;
+    video.play().catch(() => {
+      /* Vẫn không được → hiện nút vào web ngay */
+      showEnterBtn();
+    });
+  });
+
+  /* ==== 4. HIỆN NÚT "VÀO SHOP" SAU KHI VIDEO XONG ==== */
+  function showEnterBtn() {
+    enterBtn?.classList.remove('hidden');
+  }
+
+  /* Khi video kết thúc */
+  video.addEventListener('ended', () => {
+    showEnterBtn();
+  });
+
+  /* Fallback: sau 30s dù chưa xong cũng hiện nút */
+  setTimeout(showEnterBtn, 30000);
+
+  /* ==== 5. HÀM ĐÓNG VIDEO ==== */
+  function closeIntro() {
+    intro.classList.add('fade-out');
+
+    
+    
+
+    /* Dừng video */
+
+    video.pause();
+
+    /* Mở lại scroll */
+    document.body.style.overflow = '';
+
+    /* Xóa khỏi DOM sau khi fade */
+    setTimeout(() => {
+      intro.classList.add('hidden');
+    }, 650);
+  }
+
+  /* ==== 6. GẮN SỰ KIỆN ==== */
+  skipBtn?.addEventListener('click', closeIntro);
+  enterBtn?.addEventListener('click', closeIntro);
+
+  /* Nhấn ESC → thoát */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !intro.classList.contains('hidden')) {
+      closeIntro();
+    }
+  });
+
+  /* Click vào video → bỏ qua (nếu khách sốt ruột) */
+  video.addEventListener('click', closeIntro);
+
+  console.log('🎬 Video intro đang phát...');
+})();
+/* =========================================================
+   🔵 ĐĂNG NHẬP GOOGLE
+   ========================================================= */
+const GOOGLE_CLIENT_ID = '412641922057-bn8sap1lir6fsjhpbjgsp1mm4h8fh.apps.googleusercontent.com';
+
+(function initGoogleLogin() {
+  const btn = document.getElementById('googleLoginBtn');
+  if (!btn) {
+    console.warn('⚠️ Không tìm thấy nút #googleLoginBtn');
+    return;
+  }
+
+  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.includes('DÁN_CLIENT_ID')) {
+    console.warn('⚠️ Chưa cấu hình GOOGLE_CLIENT_ID');
+    btn.disabled = true;
+    return;
+  }
+
+  function waitForGoogle(maxWait = 5000) {
+    return new Promise((resolve, reject) => {
+      const start = Date.now();
+      const check = () => {
+        if (window.google?.accounts?.oauth2) {
+          resolve();
+        } else if (Date.now() - start > maxWait) {
+          reject(new Error('Google SDK không load được'));
+        } else {
+          setTimeout(check, 200);
+        }
+      };
+      check();
+    });
+  }
+
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span>⏳ Đang kết nối Google...</span>';
+
+    try {
+      await waitForGoogle();
+
+      const client = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'openid email profile',
+        callback: async (response) => {
+          if (response.error) {
+            console.error('Google login error:', response);
+            showToast('❌ Đăng nhập Google thất bại.', 'error');
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
+            return;
+          }
+
+          try {
+            const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+              headers: { Authorization: `Bearer ${response.access_token}` }
+            });
+            const info = await res.json();
+
+            const googleUser = {
+              name: info.name,
+              email: info.email,
+              phone: 'google_' + info.sub,
+              picture: info.picture,
+              method: 'google'
+            };
+
+            const users = getUsers();
+            let existing = users.find(u => u.phone === googleUser.phone);
+
+            if (!existing) {
+              users.push({
+                ...googleUser,
+                password: '(google)',
+                createdAt: new Date().toISOString()
+              });
+              saveUsers(users);
+            }
+
+            setCurrentUser({ name: googleUser.name, phone: googleUser.phone });
+
+            sendToSheet({
+              name: googleUser.name,
+              phone: googleUser.phone,
+              email: googleUser.email,
+              action: 'login_google'
+            });
+
+            document.getElementById('authModal')?.classList.add('hidden');
+            updateUserUI();
+            showSuccessPopup('Thông báo', 'SHOP TẤN ĐẠT');
+            showToast('✅ Đăng nhập Google thành công!');
+
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
+          } catch (err) {
+            console.error('Lỗi lấy info Google:', err);
+            showToast('❌ Không lấy được thông tin Google.', 'error');
+            btn.disabled = false;
+            btn.innerHTML = originalHTML;
+          }
+        }
+      });
+
+      client.requestAccessToken();
+    } catch (err) {
+      console.error('Lỗi Google login:', err);
+      showToast('❌ Không kết nối được Google. Thử lại sau.', 'error');
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
+    }
+  });
+
+  console.log('🔵 Google Login đã sẵn sàng');
 })();
