@@ -22,15 +22,37 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <!-- CSS -->
   <link rel="stylesheet" href="main.css">
 </head>
 <body>
 
+  <!-- ===== VIDEO INTRO ===== -->
+  <div id="videoIntro" class="video-intro">
+    <video
+      id="introVideo"
+      class="intro-video"
+      playsinline
+      preload="auto">
+      <source src="intro.mp4" type="video/mp4">
+      Trình duyệt của bạn không hỗ trợ video.
+    </video>
+
+    <button id="skipIntro" class="skip-intro" type="button" aria-label="Bỏ qua video">
+      Xem video hoặc Bỏ qua ✕
+    </button>
+
+    <button id="enterShop" class="enter-shop hidden" type="button">
+      <span class="enter-shop-icon">🎮</span>
+      <span>Vào Shop</span>
+    </button>
+  </div>
+
   <!-- Lớp nền động -->
   <div id="snowField" aria-hidden="true"></div>
-  <div class="ambient ambient-purple" aria-hidden="true"></div>
-  <div class="ambient ambient-cyan" aria-hidden="true"></div>
 
   <!-- ===== HEADER ===== -->
   <header class="site-header">
@@ -50,7 +72,6 @@
         <a href="#contact">Liên hệ</a>
       </nav>
 
-      <!-- USER BOX — hiện khi đã đăng nhập -->
       <div id="userBox" class="user-box hidden">
         <span class="user-name">👤 <b id="userName">Khách</b></span>
         <button id="logoutBtn" class="logout-btn" type="button" title="Đăng xuất">Thoát</button>
@@ -103,13 +124,14 @@
           </div>
           <p class="feature-text">Sau khi thanh toán, gửi thông tin giao dịch qua kênh liên hệ để được kiểm tra và hỗ trợ.</p>
         </div>
-                <!-- Ảnh quảng cáo banner -->
+
         <div class="promo-banner">
           <img src="/images/keothue.jpg" alt="Quảng cáo Shop Tấn Đạt">
         </div>
       </div>
     </section>
-        <!-- ===== SẢN PHẨM ===== -->
+
+    <!-- ===== SẢN PHẨM ===== -->
     <section id="products" class="section-shell section">
       <div class="section-heading">
         <div>
@@ -260,7 +282,7 @@
         </div>
       </div>
 
-      <!-- ===== 🎮 MOD MENU FREE FIRE (6 cards) ===== -->
+      <!-- ===== 🎮 MOD MENU FREE FIRE ===== -->
       <div class="game-section">
         <div class="game-title">
           <span class="game-title-icon">🎮</span>
@@ -270,7 +292,6 @@
 
         <div class="product-grid">
 
-          <!-- 1. Free Fire PC -->
           <article class="product-card green-card reveal">
             <div class="product-top">
               <div>
@@ -288,7 +309,6 @@
             </div>
           </article>
 
-          <!-- 2. Key Bypass XGTeam -->
           <article class="product-card orange-card reveal">
             <div class="product-top">
               <div>
@@ -306,7 +326,6 @@
             </div>
           </article>
 
-          <!-- 3. Drip Wire Android -->
           <article class="product-card purple-card reveal">
             <div class="product-top">
               <div>
@@ -324,7 +343,6 @@
             </div>
           </article>
 
-          <!-- 4. Drip Wire iOS -->
           <article class="product-card purple-card reveal">
             <div class="product-top">
               <div>
@@ -334,7 +352,7 @@
               </div>
               <div class="game-icon">🍎</div>
             </div>
-           <div class="price"><strong>210k</strong><span>/ 30 ngày</span></div>
+            <div class="price"><strong>210k</strong><span>/ 30 ngày</span></div>
             <div class="packages">
               <button class="pkg-btn" type="button" data-id="drip-adr-1" data-name="Drip Wire Android - 1 ngày" data-price="25000" data-duration="1 ngày"> 6 giờ<small>25k</small></button>
               <button class="pkg-btn" type="button" data-id="drip-adr-7" data-name="Drip Wire Android - 7 ngày" data-price="1100000" data-duration="7 ngày">7 ngày<small>110k</small></button>
@@ -342,7 +360,6 @@
             </div>
           </article>
 
-          <!-- 5. Troll Modz Android -->
           <article class="product-card cyan-card reveal">
             <div class="product-top">
               <div>
@@ -360,7 +377,6 @@
             </div>
           </article>
 
-          <!-- 6. Troll Modz iOS -->
           <article class="product-card cyan-card reveal">
             <div class="product-top">
               <div>
@@ -382,7 +398,6 @@
       </div>
 
     </section>
-    
 
     <!-- ===== DỊCH VỤ TIKTOK ===== -->
     <section id="tiktok" class="section-shell section">
@@ -391,141 +406,65 @@
           <small>TIKTOK</small>
           <h2>Dịch vụ TikTok</h2>
         </div>
-        <p>Tăng tương tác nhanh chóng, an toàn, giá rẻ. Nhấn vào mốc để đặt hàng.</p>
+        <p>Chọn dịch vụ — nhập link và số lượng trong cửa sổ đặt hàng.</p>
       </div>
 
       <div class="tiktok-grid">
 
-        <article class="tiktok-card reveal">
+        <article class="tiktok-card reveal service-form" data-price="20000">
           <div class="tiktok-head">
             <div class="tiktok-icon">❤️</div>
-            <div><h3>Tăng Tym Video Việt</h3><p>Tym chất lượng cao, tốc độ nhanh</p></div>
+            <div><h3>Tăng Tym Video Việt</h3><p>Tym chất lượng cao — <b>20k / 1000 tym</b></p></div>
           </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-tymv-1k" data-name="Tăng Tym Video Việt - 1000 Tym" data-price="20000" data-duration="1000 Tym"><b>1.000</b><small>20k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-tymv-5k" data-name="Tăng Tym Video Việt - 5000 Tym" data-price="90000" data-duration="5000 Tym"><b>5.000</b><small>90k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-tymv-10k" data-name="Tăng Tym Video Việt - 10000 Tym" data-price="170000" data-duration="10000 Tym"><b>10.000</b><small>170k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Tăng Tym Video Việt" data-unit="tym">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="tiktok-card reveal">
+        <article class="tiktok-card reveal service-form" data-price="30000">
           <div class="tiktok-head">
             <div class="tiktok-icon">💖</div>
-            <div><h3>Tăng Tym Tây Ổn Định</h3><p>Tym quốc tế, không tụt</p></div>
+            <div><h3>Tăng Tym Tây Ổn Định</h3><p>Tym quốc tế — <b>30k / 1000 tym</b></p></div>
           </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-tymt-1k" data-name="Tăng Tym Tây Ổn Định - 1000 Tym" data-price="30000" data-duration="1000 Tym"><b>1.000</b><small>30k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-tymt-5k" data-name="Tăng Tym Tây Ổn Định - 5000 Tym" data-price="140000" data-duration="5000 Tym"><b>5.000</b><small>140k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-tymt-10k" data-name="Tăng Tym Tây Ổn Định - 10000 Tym" data-price="260000" data-duration="10000 Tym"><b>10.000</b><small>260k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Tăng Tym Tây Ổn Định" data-unit="tym">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="tiktok-card reveal">
+        <article class="tiktok-card reveal service-form" data-price="15000">
           <div class="tiktok-head">
             <div class="tiktok-icon">👁️</div>
-            <div><h3>Tăng View Video</h3><p>View chất lượng, tăng đề xuất</p></div>
+            <div><h3>Tăng View Video</h3><p>View chất lượng — <b>15k / 1000 view</b></p></div>
           </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-view-10k" data-name="Tăng View Video - 10.000 view" data-price="15000" data-duration="10.000 view"><b>10.000</b><small>15k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-view-50k" data-name="Tăng View Video - 50.000 view" data-price="70000" data-duration="50.000 view"><b>50.000</b><small>70k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-view-100k" data-name="Tăng View Video - 100.000 view" data-price="130000" data-duration="100.000 view"><b>100.000</b><small>130k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Tăng View Video" data-unit="view">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="tiktok-card reveal">
-          <div class="tiktok-head">
-            <div class="tiktok-icon">🔄</div>
-            <div><h3>Tăng Share Video</h3><p>Share thật, tăng tương tác</p></div>
-          </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-share-1k" data-name="Tăng Share Video - 1000 share" data-price="15000" data-duration="1000 share"><b>1.000</b><small>15k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-share-5k" data-name="Tăng Share Video - 5000 share" data-price="65000" data-duration="5000 share"><b>5.000</b><small>65k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-share-10k" data-name="Tăng Share Video - 10000 share" data-price="120000" data-duration="10000 share"><b>10.000</b><small>120k</small></button>
-          </div>
-        </article>
-
-        <article class="tiktok-card reveal">
-          <div class="tiktok-head">
-            <div class="tiktok-icon">💾</div>
-            <div><h3>Tăng Save Video</h3><p>Save chất lượng cao</p></div>
-          </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-save-1k" data-name="Tăng Save Video - 1000 save" data-price="15000" data-duration="1000 save"><b>1.000</b><small>15k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-save-5k" data-name="Tăng Save Video - 5000 save" data-price="65000" data-duration="5000 save"><b>5.000</b><small>65k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-save-10k" data-name="Tăng Save Video - 10000 save" data-price="120000" data-duration="10000 save"><b>10.000</b><small>120k</small></button>
-          </div>
-        </article>
-
-        <article class="tiktok-card reveal">
+        <article class="tiktok-card reveal service-form" data-price="20000">
           <div class="tiktok-head">
             <div class="tiktok-icon">⚔️</div>
-            <div><h3>Tăng Điểm PK</h3><p>Tăng điểm PK nhanh</p></div>
+            <div><h3>Tăng Điểm PK</h3><p>Tăng điểm PK nhanh — <b>20k / 1000 điểm</b></p></div>
           </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-pk-1k" data-name="Tăng Điểm PK - 1000 điểm" data-price="25000" data-duration="1000 điểm"><b>1.000</b><small>25k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-pk-5k" data-name="Tăng Điểm PK - 5000 điểm" data-price="110000" data-duration="5000 điểm"><b>5.000</b><small>110k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-pk-10k" data-name="Tăng Điểm PK - 10000 điểm" data-price="200000" data-duration="10000 điểm"><b>10.000</b><small>200k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Tăng Điểm PK" data-unit="điểm">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="tiktok-card reveal">
-          <div class="tiktok-head">
-            <div class="tiktok-icon">💬</div>
-            <div><h3>Tăng Bình Luận Video</h3><p>Comment chất lượng</p></div>
-          </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-cmt-100" data-name="Tăng Bình Luận Video - 100 cmt" data-price="20000" data-duration="100 cmt"><b>100</b><small>20k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-cmt-500" data-name="Tăng Bình Luận Video - 500 cmt" data-price="90000" data-duration="500 cmt"><b>500</b><small>90k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-cmt-1k" data-name="Tăng Bình Luận Video - 1000 cmt" data-price="170000" data-duration="1000 cmt"><b>1.000</b><small>170k</small></button>
-          </div>
-        </article>
-
-        <article class="tiktok-card reveal">
+        <article class="tiktok-card reveal service-form" data-price="40000">
           <div class="tiktok-head">
             <div class="tiktok-icon">👥</div>
-            <div><h3>Tăng Follow Việt</h3><p>Follow Việt chất lượng</p></div>
+            <div><h3>Tăng Follow Việt</h3><p>Follow Việt — <b>40k / 1000 follow</b></p></div>
           </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-flv-100" data-name="Tăng Follow Việt - 100 follow" data-price="20000" data-duration="100 follow"><b>100</b><small>20k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-flv-500" data-name="Tăng Follow Việt - 500 follow" data-price="90000" data-duration="500 follow"><b>500</b><small>90k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-flv-1k" data-name="Tăng Follow Việt - 1000 follow" data-price="170000" data-duration="1000 follow"><b>1.000</b><small>170k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Tăng Follow Việt" data-unit="follow">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="tiktok-card reveal">
-          <div class="tiktok-head">
-            <div class="tiktok-icon">🌍</div>
-            <div><h3>Tăng Follow Tây</h3><p>Follow quốc tế, uy tín</p></div>
-          </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-flt-100" data-name="Tăng Follow Tây - 100 follow" data-price="30000" data-duration="100 follow"><b>100</b><small>30k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-flt-500" data-name="Tăng Follow Tây - 500 follow" data-price="140000" data-duration="500 follow"><b>500</b><small>140k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-flt-1k" data-name="Tăng Follow Tây - 1000 follow" data-price="260000" data-duration="1000 follow"><b>1.000</b><small>260k</small></button>
-          </div>
-        </article>
-
-        <article class="tiktok-card reveal">
+        <article class="tiktok-card reveal service-form" data-price="50000">
           <div class="tiktok-head">
             <div class="tiktok-icon">👀</div>
-            <div><h3>Tăng Mắt Live Tây</h3><p>Viewer live Tây chất lượng</p></div>
+            <div><h3>Tăng Mắt Live Tây</h3><p>Viewer live Tây — <b>50k / 1000 mắt</b></p></div>
           </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-live-100" data-name="Tăng Mắt Live Tây - 100 mắt" data-price="15000" data-duration="100 mắt"><b>100</b><small>15k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-live-500" data-name="Tăng Mắt Live Tây - 500 mắt" data-price="65000" data-duration="500 mắt"><b>500</b><small>65k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-live-1k" data-name="Tăng Mắt Live Tây - 1000 mắt" data-price="120000" data-duration="1000 mắt"><b>1.000</b><small>120k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Tăng Mắt Live Tây" data-unit="mắt">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="tiktok-card reveal">
+        <article class="tiktok-card reveal service-form" data-price="30000">
           <div class="tiktok-head">
             <div class="tiktok-icon">💝</div>
-            <div><h3>Tăng Tym Bình Luận</h3><p>Tym cho comment của bạn</p></div>
+            <div><h3>Tăng Tym Bình Luận</h3><p>Tym cho comment — <b>30k / 1000 tym</b></p></div>
           </div>
-          <div class="tiktok-options">
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-tymcmt-1k" data-name="Tăng Tym Bình Luận - 1000 tym" data-price="25000" data-duration="1000 tym"><b>1.000</b><small>25k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-tymcmt-5k" data-name="Tăng Tym Bình Luận - 5000 tym" data-price="110000" data-duration="5000 tym"><b>5.000</b><small>110k</small></button>
-            <button class="tiktok-btn pkg-btn" type="button" data-id="tk-tymcmt-10k" data-name="Tăng Tym Bình Luận - 10000 tym" data-price="200000" data-duration="10000 tym"><b>10.000</b><small>200k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Tăng Tym Bình Luận" data-unit="tym">🛒 Ấn Để Đặt hàng</button>
         </article>
 
       </div>
@@ -538,210 +477,115 @@
           <small>FACEBOOK</small>
           <h2>Dịch vụ Facebook</h2>
         </div>
-        <p>Tăng tương tác Facebook nhanh chóng, an toàn, giá rẻ.</p>
+        <p>Chọn dịch vụ — nhập link và số lượng trong cửa sổ đặt hàng.</p>
       </div>
 
       <div class="facebook-grid">
 
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="15000">
           <div class="facebook-head">
             <div class="facebook-icon">👍</div>
-            <div><h3>Like + CX Bài Viết Tây Sale 1</h3><p>Like + cảm xúc Tây chất lượng</p></div>
+            <div><h3>Like + CX Bài Viết Tây Sale 1</h3><p>Like + cảm xúc Tây — <b>15k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-lcx1-1k" data-name="Like + CX Tây Sale 1 - 1000" data-price="25000" data-duration="1000"><b>1.000</b><small>25k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-lcx1-5k" data-name="Like + CX Tây Sale 1 - 5000" data-price="110000" data-duration="5000"><b>5.000</b><small>110k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-lcx1-10k" data-name="Like + CX Tây Sale 1 - 10000" data-price="200000" data-duration="10000"><b>10.000</b><small>200k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Like + CX Tây Sale 1" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="25000">
           <div class="facebook-head">
             <div class="facebook-icon">👍</div>
-            <div><h3>Like + CX Bài Viết Việt Sale</h3><p>Like + cảm xúc Việt giá rẻ</p></div>
+            <div><h3>Like + CX Bài Viết Việt Sale</h3><p>Like + cảm xúc Việt — <b>25k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-lcv-1k" data-name="Like + CX Việt Sale - 1000" data-price="20000" data-duration="1000"><b>1.000</b><small>20k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-lcv-5k" data-name="Like + CX Việt Sale - 5000" data-price="90000" data-duration="5000"><b>5.000</b><small>90k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-lcv-10k" data-name="Like + CX Việt Sale - 10000" data-price="170000" data-duration="10000"><b>10.000</b><small>170k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Like + CX Việt Sale" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="25000">
           <div class="facebook-head">
             <div class="facebook-icon">💖</div>
-            <div><h3>Cảm Xúc Hỗn Hợp Bài Viết Sale</h3><p>Mix cảm xúc đa dạng</p></div>
+            <div><h3>Cảm Xúc Hỗn Hợp Bài Viết Sale</h3><p>Mix cảm xúc — <b>25k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-cxhh-1k" data-name="CX Hỗn Hợp - 1000" data-price="30000" data-duration="1000"><b>1.000</b><small>30k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-cxhh-5k" data-name="CX Hỗn Hợp - 5000" data-price="140000" data-duration="5000"><b>5.000</b><small>140k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-cxhh-10k" data-name="CX Hỗn Hợp - 10000" data-price="260000" data-duration="10000"><b>10.000</b><small>260k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="CX Hỗn Hợp" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="30000">
           <div class="facebook-head">
             <div class="facebook-icon">🌍</div>
-            <div><h3>Like + CX Bài Viết Tây Sale</h3><p>Like + cảm xúc Tây giá sale</p></div>
+            <div><h3>Like + CX Bài Viết Tây Sale</h3><p>Like + cảm xúc Tây — <b>30k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-lct-1k" data-name="Like + CX Tây Sale - 1000" data-price="25000" data-duration="1000"><b>1.000</b><small>25k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-lct-5k" data-name="Like + CX Tây Sale - 5000" data-price="110000" data-duration="5000"><b>5.000</b><small>110k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-lct-10k" data-name="Like + CX Tây Sale - 10000" data-price="200000" data-duration="10000"><b>10.000</b><small>200k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Like + CX Tây Sale" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="20000">
           <div class="facebook-head">
             <div class="facebook-icon">👥</div>
-            <div><h3>Tăng Theo Dõi</h3><p>Follow profile chất lượng</p></div>
+            <div><h3>Tăng Theo Dõi</h3><p>Follow profile — <b>20k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-fol-100" data-name="Tăng Theo Dõi - 100" data-price="25000" data-duration="100 follow"><b>100</b><small>25k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-fol-500" data-name="Tăng Theo Dõi - 500" data-price="110000" data-duration="500 follow"><b>500</b><small>110k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-fol-1k" data-name="Tăng Theo Dõi - 1000" data-price="200000" data-duration="1000 follow"><b>1.000</b><small>200k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Tăng Theo Dõi" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="25000">
           <div class="facebook-head">
             <div class="facebook-icon">👨‍👩‍👧</div>
-            <div><h3>Tăng Thành Viên Group</h3><p>Member thật, không tụt</p></div>
+            <div><h3>Tăng Thành Viên Group</h3><p>Member thật — <b>25k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-grp-100" data-name="Thành Viên Group - 100" data-price="30000" data-duration="100 tv"><b>100</b><small>30k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-grp-500" data-name="Thành Viên Group - 500" data-price="140000" data-duration="500 tv"><b>500</b><small>140k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-grp-1k" data-name="Thành Viên Group - 1000" data-price="260000" data-duration="1000 tv"><b>1.000</b><small>260k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Thành Viên Group" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="25000">
           <div class="facebook-head">
             <div class="facebook-icon">👍</div>
-            <div><h3>Tăng Like Bài Viết</h3><p>Like bài viết chất lượng</p></div>
+            <div><h3>Tăng Like Bài Viết</h3><p>Like bài viết — <b>25k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-lk-1k" data-name="Like Bài Viết - 1000" data-price="25000" data-duration="1000"><b>1.000</b><small>25k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-lk-5k" data-name="Like Bài Viết - 5000" data-price="110000" data-duration="5000"><b>5.000</b><small>110k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-lk-10k" data-name="Like Bài Viết - 10000" data-price="200000" data-duration="10000"><b>10.000</b><small>200k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Like Bài Viết" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card reveal">
-          <div class="facebook-head">
-            <div class="facebook-icon">💬</div>
-            <div><h3>Tăng Cảm Xúc Bình Luận</h3><p>Cảm xúc cho comment</p></div>
-          </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-cxbl-1k" data-name="CX Bình Luận - 1000" data-price="30000" data-duration="1000"><b>1.000</b><small>30k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-cxbl-5k" data-name="CX Bình Luận - 5000" data-price="140000" data-duration="5000"><b>5.000</b><small>140k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-cxbl-10k" data-name="CX Bình Luận - 10000" data-price="260000" data-duration="10000"><b>10.000</b><small>260k</small></button>
-          </div>
-        </article>
-
-        <article class="facebook-card reveal">
-          <div class="facebook-head">
-            <div class="facebook-icon">📖</div>
-            <div><h3>Tăng View Story</h3><p>View story chất lượng</p></div>
-          </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-story-1k" data-name="View Story - 1000" data-price="20000" data-duration="1000"><b>1.000</b><small>20k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-story-5k" data-name="View Story - 5000" data-price="90000" data-duration="5000"><b>5.000</b><small>90k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-story-10k" data-name="View Story - 10000" data-price="170000" data-duration="10000"><b>10.000</b><small>170k</small></button>
-          </div>
-        </article>
-
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="20000">
           <div class="facebook-head">
             <div class="facebook-icon">🔄</div>
-            <div><h3>Tăng Share Bài Viết</h3><p>Share thật, tăng reach</p></div>
+            <div><h3>Tăng Share Bài Viết</h3><p>Share thật — <b>20k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-share-1k" data-name="Share Bài Viết - 1000" data-price="20000" data-duration="1000"><b>1.000</b><small>20k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-share-5k" data-name="Share Bài Viết - 5000" data-price="90000" data-duration="5000"><b>5.000</b><small>90k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-share-10k" data-name="Share Bài Viết - 10000" data-price="170000" data-duration="10000"><b>10.000</b><small>170k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Share Bài Viết" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="30000">
           <div class="facebook-head">
             <div class="facebook-icon">📄</div>
-            <div><h3>Tăng Like + Follow Page</h3><p>Like + follow page uy tín</p></div>
+            <div><h3>Tăng Like + Follow Page</h3><p>Like + follow page — <b>30k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-page-1k" data-name="Like + Follow Page - 1000" data-price="30000" data-duration="1000"><b>1.000</b><small>30k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-page-5k" data-name="Like + Follow Page - 5000" data-price="140000" data-duration="5000"><b>5.000</b><small>140k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-page-10k" data-name="Like + Follow Page - 10000" data-price="260000" data-duration="10000"><b>10.000</b><small>260k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="Like + Follow Page" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card reveal">
-          <div class="facebook-head">
-            <div class="facebook-icon">💬</div>
-            <div><h3>Tăng Bình Luận</h3><p>Comment chất lượng cao</p></div>
-          </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-cmt-100" data-name="Bình Luận - 100" data-price="25000" data-duration="100"><b>100</b><small>25k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-cmt-500" data-name="Bình Luận - 500" data-price="110000" data-duration="500"><b>500</b><small>110k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-cmt-1k" data-name="Bình Luận - 1000" data-price="200000" data-duration="1000"><b>1.000</b><small>200k</small></button>
-          </div>
-        </article>
-
-        <article class="facebook-card reveal">
-          <div class="facebook-head">
-            <div class="facebook-icon">👀</div>
-            <div><h3>Tăng Mắt Live Ổn Định</h3><p>Viewer live ổn định</p></div>
-          </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-live-100" data-name="Mắt Live - 100" data-price="20000" data-duration="100"><b>100</b><small>20k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-live-500" data-name="Mắt Live - 500" data-price="90000" data-duration="500"><b>500</b><small>90k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-live-1k" data-name="Mắt Live - 1000" data-price="170000" data-duration="1000"><b>1.000</b><small>170k</small></button>
-          </div>
-        </article>
-
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="20000">
           <div class="facebook-head">
             <div class="facebook-icon">🎬</div>
-            <div><h3>Tăng View Video + Reel</h3><p>View video và reel chất lượng</p></div>
+            <div><h3>Tăng View Video + Reel</h3><p>View video, reel — <b>20k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-video-1k" data-name="View Video + Reel - 1000" data-price="20000" data-duration="1000"><b>1.000</b><small>20k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-video-5k" data-name="View Video + Reel - 5000" data-price="90000" data-duration="5000"><b>5.000</b><small>90k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-video-10k" data-name="View Video + Reel - 10000" data-price="170000" data-duration="10000"><b>10.000</b><small>170k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="View Video + Reel" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card reveal">
+        <article class="facebook-card reveal service-form" data-price="25000">
           <div class="facebook-head">
             <div class="facebook-icon">💝</div>
-            <div><h3>Tăng Cảm Xúc Story</h3><p>Cảm xúc cho story</p></div>
+            <div><h3>Tăng Cảm Xúc Story</h3><p>Cảm xúc story — <b>25k / 1000</b></p></div>
           </div>
-          <div class="facebook-options">
-            <button class="pkg-btn" type="button" data-id="fb-cxstory-1k" data-name="CX Story - 1000" data-price="25000" data-duration="1000"><b>1.000</b><small>25k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-cxstory-5k" data-name="CX Story - 5000" data-price="110000" data-duration="5000"><b>5.000</b><small>110k</small></button>
-            <button class="pkg-btn" type="button" data-id="fb-cxstory-10k" data-name="CX Story - 10000" data-price="200000" data-duration="10000"><b>10.000</b><small>200k</small></button>
-          </div>
+          <button type="button" class="order-now-btn" data-name="CX Story" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
-        <article class="facebook-card vip-card reveal">
+        <article class="facebook-card vip-card reveal service-form" data-price="350000">
           <div class="facebook-head">
             <div class="facebook-icon vip-icon">👑</div>
             <div>
               <span class="tag vip-tag">VIP</span>
               <h3>Vip Like Tháng</h3>
-              <p>Gói VIP cao cấp, không tụt</p>
+              <p>Gói VIP cao cấp — <b>150k / tháng</b></p>
             </div>
           </div>
-          <div class="vip-price">
-            <strong>350k</strong>
-            <span>/ tháng</span>
-          </div>
-          <button class="pkg-btn vip-btn" type="button" data-id="fb-vip" data-name="Vip Like Tháng" data-price="350000" data-duration="1 tháng">🚀 Đặt ngay</button>
+          <button type="button" class="order-now-btn" data-name="Vip Like Tháng" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
 
       </div>
     </section>
-          <!-- ===== THANH TOÁN ===== -->
+
+    <!-- ===== THANH TOÁN ===== -->
     <section id="payment" class="section-shell section">
       <div class="payment-box">
         <div class="section-heading compact">
@@ -750,7 +594,6 @@
 
         <div class="payment-grid">
 
-          <!-- Vietcombank -->
           <div class="payment-card">
             <div class="pay-head">
               <div class="pay-logo">
@@ -766,7 +609,6 @@
             <button class="qr-btn" type="button" data-qr="45.jpg">Mở mã QR</button>
           </div>
 
-          <!-- VietinBank -->
           <div class="payment-card">
             <div class="pay-head">
               <div class="pay-logo">
@@ -785,6 +627,7 @@
         </div>
       </div>
     </section>
+
     <!-- ===== LIÊN HỆ ===== -->
     <section id="contact" class="contact-section">
       <div class="section-shell section">
@@ -796,7 +639,6 @@
 
         <div class="social-grid">
 
-          <!-- Zalo Personal -->
           <a class="social-item" href="https://zalo.me/0345085074" target="_blank" rel="noopener" aria-label="Zalo Personal">
             <div class="social-logo zalo">
               <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
@@ -808,7 +650,6 @@
             <b>Chat ngay →</b>
           </a>
 
-          <!-- Facebook Admin -->
           <a class="social-item" href="https://www.facebook.com/tandat2609206" target="_blank" rel="noopener" aria-label="Facebook Admin">
             <div class="social-logo facebook">
               <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
@@ -820,7 +661,6 @@
             <b>Liên hệ →</b>
           </a>
 
-          <!-- Discord -->
           <a class="social-item" href="https://discord.gg/68N4zv3Cx" target="_blank" rel="noopener" aria-label="Discord Server">
             <div class="social-logo discord">
               <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
@@ -832,7 +672,6 @@
             <b>Join ngay →</b>
           </a>
 
-          <!-- Zalo VIP Group -->
           <a class="social-item" href="https://zalo.me/g/famzbmygs2fq577k0348" target="_blank" rel="noopener" aria-label="Nhóm Zalo VIP">
             <div class="social-logo zalo-vip">
               <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
@@ -889,13 +728,35 @@
 
         <div id="orderSummary" class="order-summary"></div>
 
+        <!-- ⚡ CHỈ HIỆN VỚI DỊCH VỤ TIKTOK/FACEBOOK -->
+        <div id="serviceExtraFields" class="service-extra hidden">
+          <label class="extra-label">🔗 Link video/bài viết:</label>
+          <input type="text" id="extraLink" class="extra-input" placeholder="Dán link vào đây...">
+
+          <label class="extra-label">🔢 Số lượng:</label>
+          <input type="number" id="extraQty" class="extra-input" min="1" step="100" value="1000" placeholder="Nhập số lượng">
+
+          <div class="extra-total">
+            💰 Đơn giá: <b id="extraTotal">25.000đ</b>
+          </div>
+        </div>
+
         <form id="orderForm" novalidate>
           <input required name="buyerName" placeholder="Họ tên" autocomplete="name" minlength="2">
           <input required name="phone" inputmode="tel"
                  pattern="^(0|\+84)[0-9]{9,10}$"
                  title="SĐT 10-11 số, bắt đầu bằng 0 hoặc +84"
                  placeholder="Số điện thoại" autocomplete="tel">
-          <textarea name="note" rows="3" placeholder="Ghi chú (tùy chọn)"></textarea>
+
+          <div class="upload-box">
+            <label class="upload-label">📸 Ảnh thanh toán (bắt buộc):</label>
+            <input type="file" id="paymentProof" accept="image/*" required>
+            <div id="previewWrap" class="preview-wrap hidden">
+              <img id="previewImg" alt="Ảnh thanh toán">
+              <button type="button" id="removeImg" class="remove-img-btn">✖ Xóa ảnh</button>
+            </div>
+          </div>
+
           <div class="method-grid">
             <button type="button" id="bankBtn" class="active">🏦 Vietcombank</button>
             <button type="button" id="vietinbankBtn">🏦 VietinBank</button>
@@ -944,6 +805,22 @@
       <div class="auth-tabs">
         <button type="button" id="tabLogin"    class="auth-tab active">Đăng nhập</button>
         <button type="button" id="tabRegister" class="auth-tab">Đăng ký</button>
+      </div>
+
+      <!-- 🔵 ĐĂNG NHẬP GOOGLE -->
+      <div id="googleLoginWrap" class="google-login-wrap">
+        <button type="button" id="googleLoginBtn" class="google-login-btn">
+          <svg width="20" height="20" viewBox="0 0 48 48">
+            <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+            <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+            <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0124 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/>
+            <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 01-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+          </svg>
+          <span>Đăng nhập bằng Google</span>
+        </button>
+        <div class="google-divider">
+          <span>hoặc</span>
+        </div>
       </div>
 
       <!-- Form đăng nhập -->
@@ -1088,6 +965,17 @@
 
   <!-- Toast -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- ===== NÚT ZALO NỔI ===== -->
+  <a href="https://zalo.me/0345085074"
+     class="zalo-float"
+     target="_blank"
+     rel="noopener"
+     aria-label="Chat Zalo với Shop Tấn Đạt">
+    <span class="zalo-pulse"></span>
+    <span class="zalo-icon">💬</span>
+    <span class="zalo-text">Chat Zalo</span>
+  </a>
 
   <!-- JS -->
   <script src="main.js"></script>
