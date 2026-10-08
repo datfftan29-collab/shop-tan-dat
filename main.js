@@ -340,20 +340,10 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   renderPlaylist();
   loadTrack(3, false);
 
-  /* NHẠC CHỈ PHÁT KHI INTRO ĐÓNG */
-  function isIntroOpen() {
-    const intro = document.getElementById('videoIntro');
-    return intro && !intro.classList.contains('hidden');
-  }
-
+  /* Autoplay sau lần tương tác đầu tiên */
   let autoplayTried = false;
-
   function tryAutoplayOnce() {
     if (autoplayTried) return;
-    if (isIntroOpen()) {
-      console.log('ℹ️ Intro đang hiện → chờ intro xong mới phát nhạc');
-      return;
-    }
     autoplayTried = true;
     if (audio.paused) {
       audio.play()
@@ -365,21 +355,10 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
     document.removeEventListener('keydown', tryAutoplayOnce);
     document.removeEventListener('scroll', tryAutoplayOnce);
   }
-
   document.addEventListener('click', tryAutoplayOnce);
   document.addEventListener('touchstart', tryAutoplayOnce, { passive: true });
   document.addEventListener('keydown', tryAutoplayOnce);
   document.addEventListener('scroll', tryAutoplayOnce, { passive: true });
-
-  document.addEventListener('introClosed', () => {
-    console.log('🎵 Intro đã đóng → phát nhạc nền');
-    autoplayTried = false;
-    if (audio.paused) {
-      audio.play()
-        .then(() => setPlayingUI(true))
-        .catch(err => console.warn('Không phát được nhạc:', err));
-    }
-  });
 })();
 
 /* =========================================================
@@ -1010,163 +989,6 @@ function clearAllHistory() {
 })();
 
 /* =========================================================
-   🎬 VIDEO INTRO — Nút loa + Đếm ngược 5s + Phát nhạc sau intro
-   ✅ ĐÃ FIX SCROLL MOBILE
-   ========================================================= */
-(function initVideoIntro() {
-  const intro        = document.getElementById('videoIntro');
-  const video        = document.getElementById('introVideo');
-  const soundToggle  = document.getElementById('soundToggle');
-  const skipBtn      = document.getElementById('skipIntro');
-  const enterBtn     = document.getElementById('enterShop');
-  const countdownEl  = document.getElementById('introCountdown');
-  const countdownTxt = document.getElementById('countdownText');
-
-  if (!intro || !video) return;
-
-  /* KHÓA SCROLL KHI INTRO MỞ — đủ cách để fix iOS/Android */
-  document.body.style.overflow = 'hidden';
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
-  document.documentElement.style.overflow = 'hidden';
-
-   video.muted = true;
-  video.volume = 0.8;
-  video.setAttribute('muted', '');
-  video.setAttribute('playsinline', '');
-  video.setAttribute('webkit-playsinline', '');
-
-  /* Phát video — có fallback cho mobile */
-  const playPromise = video.play();
-  
-  if (playPromise !== undefined) {
-    playPromise
-      .then(() => {
-        console.log('🎬 Video intro phát OK');
-      })
-      .catch(err => {
-        console.warn('⚠️ Không autoplay được:', err);
-        
-        /* FALLBACK CHO MOBILE: thử play lại sau khi user tap lần đầu */
-        const tryPlayOnTouch = () => {
-          video.play()
-            .then(() => {
-              console.log('🎬 Video phát sau touch');
-              document.removeEventListener('touchstart', tryPlayOnTouch);
-              document.removeEventListener('click', tryPlayOnTouch);
-            })
-            .catch(() => {
-              /* Vẫn không được → hiện nút vào shop */
-              showEnterBtn();
-            });
-        };
-        
-        document.addEventListener('touchstart', tryPlayOnTouch, { once: true });
-        document.addEventListener('click', tryPlayOnTouch, { once: true });
-      });
-  }
-
-  /* FALLBACK: Nếu video không load được sau 3s → hiện nút Vào Shop */
-  setTimeout(() => {
-    if (video.readyState < 2 || video.videoWidth === 0) {
-      console.warn('⚠️ Video không load được → hiện nút Vào Shop');
-      showEnterBtn();
-      if (skipBtn) skipBtn.classList.remove('hidden');
-    }
-  }, 3000);
-
-  if (soundToggle) {
-    soundToggle.addEventListener('click', () => {
-      if (video.muted) {
-        video.muted = false;
-        video.volume = 0.8;
-        video.play().catch(() => {});
-        soundToggle.textContent = '🔊';
-        soundToggle.classList.add('on');
-        console.log('🔊 Bật tiếng');
-      } else {
-        video.muted = true;
-        soundToggle.textContent = '🔇';
-        soundToggle.classList.remove('on');
-        console.log('🔇 Tắt tiếng');
-      }
-    });
-  }
-
-  let secondsLeft = 5;
-  const countdownInterval = setInterval(() => {
-    secondsLeft--;
-    if (countdownTxt) countdownTxt.textContent = secondsLeft;
-
-    if (secondsLeft <= 0) {
-      clearInterval(countdownInterval);
-      if (countdownEl) countdownEl.classList.add('hidden');
-      if (skipBtn) skipBtn.classList.remove('hidden');
-      console.log('✅ Đã hiện nút Bỏ qua');
-    }
-  }, 1000);
-
-  function showEnterBtn() {
-    if (enterBtn) enterBtn.classList.remove('hidden');
-  }
-  video.addEventListener('ended', showEnterBtn);
-  setTimeout(showEnterBtn, 60000);
-
-  /* ĐÓNG INTRO — MỞ LẠI SCROLL CHO MỌI THIẾT BỊ */
-  function closeIntro() {
-    intro.classList.add('fade-out');
-    video.pause();
-
-    /* MỞ LẠI SCROLL — fix triệt để mobile */
-    document.body.style.overflow = '';
-    document.body.style.position = '';
-    document.body.style.width = '';
-    document.body.style.height = '';
-    document.documentElement.style.overflow = '';
-
-    /* Thêm class để CSS hỗ trợ */
-    document.body.classList.add('intro-closed');
-    document.documentElement.classList.add('intro-closed');
-
-    clearInterval(countdownInterval);
-
-    setTimeout(() => {
-      intro.classList.add('hidden');
-      intro.style.display = 'none';
-      document.dispatchEvent(new Event('introClosed'));
-      console.log('✅ Intro đã đóng → phát nhạc nền');
-    }, 650);
-  }
-
-  if (skipBtn)  skipBtn.addEventListener('click', closeIntro);
-  if (enterBtn) enterBtn.addEventListener('click', closeIntro);
-
-  /* CHO PHÉP TAP VÀO VIDEO ĐỂ ĐÓNG INTRO (mobile) */
-  video.addEventListener('click', () => {
-    /* Nếu video đã bật tiếng → click đóng intro */
-    if (!video.muted) {
-      closeIntro();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !intro.classList.contains('hidden')) {
-      closeIntro();
-    }
-  });
-
-  /* FALLBACK: tự động đóng intro sau 60s dù user không làm gì */
-  setTimeout(() => {
-    if (!intro.classList.contains('hidden')) {
-      closeIntro();
-      console.log('⏰ Tự động đóng intro sau 60s');
-    }
-  }, 60000);
-
-  console.log('🎬 Video intro sẵn sàng');
-})();
-
-/* =========================================================
    🔵 ĐĂNG NHẬP GOOGLE
    ========================================================= */
 const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.googleusercontent.com';
@@ -1280,67 +1102,117 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
 
   console.log('🔵 Google Login đã sẵn sàng');
 })();
+
 /* =========================================================
-   📱 PWA — NÚT CÀI ĐẶT APP
+   📲 PWA INSTALL POPUP
    ========================================================= */
-let deferredPrompt = null;
+(function initPwaPopup() {
+  const modal     = document.getElementById('pwaInstallModal');
+  const closeBtn  = document.getElementById('pwaCloseBtn');
+  const installBtn= document.getElementById('pwaInstallBtn');
+  const laterBtn  = document.getElementById('pwaLaterBtn');
+  const guideText = document.getElementById('pwaGuideText');
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  console.log('📱 PWA có thể cài đặt');
-  showInstallButton();
-});
+  if (!modal) return;
 
-function showInstallButton() {
-  if (document.getElementById('pwaInstallBtn')) return;
+  const DISMISS_KEY = 'pwaPopupDismissedAt';
+  const DISMISS_DAYS = 3;
+  const SHOW_DELAY = 4000;
 
-  const btn = document.createElement('button');
-  btn.id = 'pwaInstallBtn';
-  btn.innerHTML = '📱 Cài đặt App';
-  btn.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 99998;
-    padding: 12px 20px;
-    border-radius: 50px;
-    border: none;
-    background: linear-gradient(135deg, #22d3ee, #a855f7);
-    color: #fff;
-    font-size: 14px;
-    font-weight: 800;
-    font-family: inherit;
-    cursor: pointer;
-    box-shadow: 0 6px 24px rgba(168, 85, 247, 0.6);
-    animation: pwaPulse 2s ease-in-out infinite;
-  `;
+  let deferredPrompt = null;
 
-  btn.onclick = async () => {
-    if (!deferredPrompt) return;
+  function isPwaInstalled() {
+    return window.matchMedia('(display-mode: standalone)').matches
+        || window.navigator.standalone === true;
+  }
+
+  function shouldShow() {
+    if (isPwaInstalled()) return false;
+    const dismissedAt = localStorage.getItem(DISMISS_KEY);
+    if (dismissedAt) {
+      const days = (Date.now() - parseInt(dismissedAt, 10)) / 86400000;
+      if (days < DISMISS_DAYS) return false;
+    }
+    return true;
+  }
+
+  function openPopup() {
+    if (!shouldShow()) return;
+    modal.classList.remove('hidden');
+  }
+
+  function closePopup(saveDismiss = true) {
+    modal.classList.add('hidden');
+    if (saveDismiss) {
+      try { localStorage.setItem(DISMISS_KEY, Date.now().toString()); } catch {}
+    }
+  }
+
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  }
+
+  function showGuideText() {
+    if (!guideText) return;
+    if (isIOS()) {
+      guideText.textContent = '📱 Trên iPhone/iPad: Nhấn nút Chia sẻ (□↑) → chọn "Thêm vào màn hình chính" → nhấn "Thêm".';
+    } else {
+      guideText.textContent = '📱 Trên Android: Mở menu trình duyệt (⋮) → chọn "Cài đặt ứng dụng" hoặc "Thêm vào Màn hình chính".';
+    }
+  }
+
+  /* Bắt sự kiện trình duyệt cho phép cài */
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    console.log('📱 PWA có thể cài đặt');
+    setTimeout(openPopup, SHOW_DELAY);
+  });
+
+  /* Fallback cho iOS */
+  if (isIOS() && shouldShow()) {
+    setTimeout(openPopup, SHOW_DELAY);
+  }
+
+  /* Nút Cài đặt */
+  installBtn?.addEventListener('click', async () => {
+    if (!deferredPrompt) {
+      showGuideText();
+      return;
+    }
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     console.log('📱 User chọn:', outcome);
     deferredPrompt = null;
-    btn.remove();
-  };
-
-  document.body.appendChild(btn);
-
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes pwaPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+    if (outcome === 'accepted') {
+      closePopup(false);
+    } else {
+      closePopup(true);
     }
-  `;
-  document.head.appendChild(style);
-}
+  });
 
-window.addEventListener('appinstalled', () => {
-  console.log('✅ Đã cài đặt PWA');
-  document.getElementById('pwaInstallBtn')?.remove();
-  deferredPrompt = null;
-});
+  /* Nút Để sau */
+  laterBtn?.addEventListener('click', () => closePopup(true));
 
-console.log('📱 PWA sẵn sàng');
+  /* Nút X */
+  closeBtn?.addEventListener('click', () => closePopup(true));
+
+  /* Click nền đóng */
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closePopup(true);
+  });
+
+  /* ESC đóng */
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closePopup(true);
+  });
+
+  /* Khi cài xong */
+  window.addEventListener('appinstalled', () => {
+    console.log('✅ Đã cài PWA');
+    closePopup(false);
+    deferredPrompt = null;
+  });
+
+  console.log('📲 PWA Popup sẵn sàng');
+})();
