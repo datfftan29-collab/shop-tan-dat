@@ -1030,15 +1030,50 @@ function clearAllHistory() {
   document.body.style.width = '100%';
   document.documentElement.style.overflow = 'hidden';
 
-  video.muted = true;
+   video.muted = true;
   video.volume = 0.8;
+  video.setAttribute('muted', '');
+  video.setAttribute('playsinline', '');
+  video.setAttribute('webkit-playsinline', '');
 
-  video.play()
-    .then(() => console.log('🎬 Video intro phát (muted)'))
-    .catch(err => {
-      console.warn('⚠️ Không autoplay được:', err);
+  /* Phát video — có fallback cho mobile */
+  const playPromise = video.play();
+  
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        console.log('🎬 Video intro phát OK');
+      })
+      .catch(err => {
+        console.warn('⚠️ Không autoplay được:', err);
+        
+        /* FALLBACK CHO MOBILE: thử play lại sau khi user tap lần đầu */
+        const tryPlayOnTouch = () => {
+          video.play()
+            .then(() => {
+              console.log('🎬 Video phát sau touch');
+              document.removeEventListener('touchstart', tryPlayOnTouch);
+              document.removeEventListener('click', tryPlayOnTouch);
+            })
+            .catch(() => {
+              /* Vẫn không được → hiện nút vào shop */
+              showEnterBtn();
+            });
+        };
+        
+        document.addEventListener('touchstart', tryPlayOnTouch, { once: true });
+        document.addEventListener('click', tryPlayOnTouch, { once: true });
+      });
+  }
+
+  /* FALLBACK: Nếu video không load được sau 3s → hiện nút Vào Shop */
+  setTimeout(() => {
+    if (video.readyState < 2 || video.videoWidth === 0) {
+      console.warn('⚠️ Video không load được → hiện nút Vào Shop');
       showEnterBtn();
-    });
+      if (skipBtn) skipBtn.classList.remove('hidden');
+    }
+  }, 3000);
 
   if (soundToggle) {
     soundToggle.addEventListener('click', () => {
