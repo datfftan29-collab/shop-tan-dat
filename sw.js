@@ -2,7 +2,7 @@
    SHOP TẤN ĐẠT — SERVICE WORKER (PWA)
    ========================================================= */
 
-const CACHE_NAME = 'shop-tan-dat-v1';
+const CACHE_NAME = 'shop-tan-dat-v2';
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -11,8 +11,9 @@ const ASSETS_TO_CACHE = [
   '/main.js',
   '/intro.mp4',
   '/manifest.json',
-  '/ivconadr.png',
-  '/ivconios.png',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
   '/images/da.png',
   '/images/keothue.jpg',
   '/images/logovcb.jpg',
