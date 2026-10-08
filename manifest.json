@@ -1,0 +1,54 @@
+{
+  "name": "Shop Tấn Đạt — Gói dịch vụ game",
+  "short_name": "Shop Tấn Đạt",
+  "description": "Gói dịch vụ Liên Quân, Free Fire, TikTok, Facebook. Hỗ trợ 24/7.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07070a",
+  "theme_color": "#07070a",
+  "lang": "vi",
+  "dir": "ltr",
+  "categories": ["shopping", "games", "business"],
+  "icons": [
+    {
+      "src": "ivconadr.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "ivconadr.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "ivconios.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "ivconios.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Xem gói dịch vụ",
+      "short_name": "Gói dịch vụ",
+      "url": "/#products",
+      "icons": [{ "src": "ivconadr.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Lịch sử đơn hàng",
+      "short_name": "Lịch sử",
+      "url": "/#history",
+      "icons": [{ "src": "ivconadr.png", "sizes": "192x192" }]
+    }
+  ]
+}
