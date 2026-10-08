@@ -23,7 +23,6 @@
 
   <!-- ===== PWA ===== -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#07070a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Shop Tấn Đạt">
@@ -35,38 +34,45 @@
 </head>
 <body>
 
-  <!-- ===== VIDEO INTRO ===== -->
-  <div id="videoIntro" class="video-intro">
-    <video
-      id="introVideo"
-      class="intro-video"
-      playsinline
-      webkit-playsinline
-      muted
-      autoplay
-      preload="auto"
-      x5-playsinline
-      x5-video-player-type="h5"
-      x5-video-player-fullscreen="false">
-      <source src="intro.mp4" type="video/mp4; codecs=avc1.42E01E, mp4a.40.2">
-      Trình duyệt của bạn không hỗ trợ video.
-    </video>
+  <!-- ===== POPUP CÀI ĐẶT APP (PWA) ===== -->
+  <div id="pwaInstallModal" class="pwa-install-modal hidden" role="dialog" aria-modal="true">
+    <div class="pwa-install-card">
+      <button id="pwaCloseBtn" class="pwa-install-close" type="button" aria-label="Đóng">×</button>
 
-    <!-- Nút loa bật/tắt tiếng -->
-    <button id="soundToggle" class="sound-toggle" type="button" aria-label="Bật/tắt tiếng">
-      🔇
-    </button>
+      <div class="pwa-install-icon">📱</div>
+      <h2 class="pwa-install-title">Cài đặt Shop Tấn Đạt</h2>
+      <p class="pwa-install-sub">Thêm app vào màn hình chính để truy cập nhanh hơn, không cần mở trình duyệt!</p>
 
-    <!-- Nút bỏ qua — ẩn ban đầu -->
-    <button id="skipIntro" class="skip-intro hidden" type="button" aria-label="Bỏ qua video">
-      Bỏ qua ✕
-    </button>
+      <div class="pwa-install-features">
+        <div class="pwa-feature">
+          <span class="pwa-feature-icon">⚡</span>
+          <span>Mở cực nhanh, mượt mà</span>
+        </div>
+        <div class="pwa-feature">
+          <span class="pwa-feature-icon">🔔</span>
+          <span>Nhận thông báo đơn hàng</span>
+        </div>
+        <div class="pwa-feature">
+          <span class="pwa-feature-icon">📶</span>
+          <span>Xem được khi mất mạng</span>
+        </div>
+        <div class="pwa-feature">
+          <span class="pwa-feature-icon">🎨</span>
+          <span>Icon riêng đẹp mắt</span>
+        </div>
+      </div>
 
-    <!-- Nút vào shop -->
-    <button id="enterShop" class="enter-shop hidden" type="button">
-      <span class="enter-shop-icon">🎮</span>
-      <span>Vào Shop</span>
-    </button>
+      <div class="pwa-install-actions">
+        <button id="pwaInstallBtn" class="pwa-install-btn" type="button">
+          📱 Cài đặt ngay
+        </button>
+        <button id="pwaLaterBtn" class="pwa-later-btn" type="button">
+          Để sau
+        </button>
+      </div>
+
+      <p class="pwa-install-note" id="pwaGuideText"></p>
+    </div>
   </div>
 
   <!-- Lớp nền động -->
@@ -159,7 +165,7 @@
         <p>Nhấn vào thời hạn để mở cửa sổ đặt hàng và xem phương thức thanh toán.</p>
       </div>
 
-      <!-- ===== 🎯 LIÊN QUÂN ===== -->
+      <!-- LIÊN QUÂN -->
       <div class="game-section">
         <div class="game-title">
           <span class="game-title-icon">🎯</span>
@@ -168,7 +174,6 @@
         </div>
 
         <div class="product-grid">
-
           <article class="product-card purple-card reveal">
             <div class="product-top">
               <div>
@@ -202,11 +207,10 @@
               <button class="pkg-btn active pink" type="button" data-id="lqi-30" data-name="Liên Quân iOS - 30 ngày" data-price="400000" data-duration="30 ngày">30 ngày<small>400k</small></button>
             </div>
           </article>
-
         </div>
       </div>
 
-      <!-- ===== 🎱 8 BALL POOL ===== -->
+      <!-- 8 BALL POOL -->
       <div class="game-section">
         <div class="game-title">
           <span class="game-title-icon">🎱</span>
@@ -215,7 +219,6 @@
         </div>
 
         <div class="product-grid">
-
           <article class="product-card indigo-card reveal">
             <div class="product-top">
               <div>
@@ -232,11 +235,10 @@
               <button class="pkg-btn active indigo" type="button" data-id="8bp-30" data-name="8 Ball Pool iOS - 30 ngày" data-price="400000" data-duration="30 ngày">30 ngày<small>400k</small></button>
             </div>
           </article>
-
         </div>
       </div>
 
-      <!-- ===== 🎮 PLAY TOGETHER ===== -->
+      <!-- PLAY TOGETHER -->
       <div class="game-section">
         <div class="game-title">
           <span class="game-title-icon">🎮</span>
@@ -245,7 +247,6 @@
         </div>
 
         <div class="product-grid">
-
           <article class="product-card yellow-card reveal">
             <div class="product-top">
               <div>
@@ -296,11 +297,10 @@
               <button class="pkg-btn active red" type="button" data-id="ptp-30" data-name="Play Together PC - 30 ngày" data-price="300000" data-duration="30 ngày">30 ngày<small>300k</small></button>
             </div>
           </article>
-
         </div>
       </div>
 
-      <!-- ===== 🎮 MOD MENU FREE FIRE ===== -->
+      <!-- MOD MENU FREE FIRE -->
       <div class="game-section">
         <div class="game-title">
           <span class="game-title-icon">🎮</span>
@@ -309,7 +309,6 @@
         </div>
 
         <div class="product-grid">
-
           <article class="product-card green-card reveal">
             <div class="product-top">
               <div>
@@ -411,24 +410,18 @@
               <button class="pkg-btn active cyan" type="button" data-id="troll-adr-30" data-name="Troll Modz Android - 30 ngày" data-price="300000" data-duration="30 ngày">30 ngày<small>300k</small></button>
             </div>
           </article>
-
         </div>
       </div>
-
     </section>
 
-    <!-- ===== DỊCH VỤ TIKTOK ===== -->
+    <!-- ===== TIKTOK ===== -->
     <section id="tiktok" class="section-shell section">
       <div class="section-heading">
-        <div>
-          <small>TIKTOK</small>
-          <h2>Dịch vụ TikTok</h2>
-        </div>
+        <div><small>TIKTOK</small><h2>Dịch vụ TikTok</h2></div>
         <p>Chọn dịch vụ — nhập link và số lượng trong cửa sổ đặt hàng.</p>
       </div>
 
       <div class="tiktok-grid">
-
         <article class="tiktok-card reveal service-form" data-price="20000">
           <div class="tiktok-head">
             <div class="tiktok-icon">❤️</div>
@@ -484,22 +477,17 @@
           </div>
           <button type="button" class="order-now-btn" data-name="Tăng Tym Bình Luận" data-unit="tym">🛒 Ấn Để Đặt hàng</button>
         </article>
-
       </div>
     </section>
 
-    <!-- ===== DỊCH VỤ FACEBOOK ===== -->
+    <!-- ===== FACEBOOK ===== -->
     <section id="facebook" class="section-shell section">
       <div class="section-heading">
-        <div>
-          <small>FACEBOOK</small>
-          <h2>Dịch vụ Facebook</h2>
-        </div>
+        <div><small>FACEBOOK</small><h2>Dịch vụ Facebook</h2></div>
         <p>Chọn dịch vụ — nhập link và số lượng trong cửa sổ đặt hàng.</p>
       </div>
 
       <div class="facebook-grid">
-
         <article class="facebook-card reveal service-form" data-price="15000">
           <div class="facebook-head">
             <div class="facebook-icon">👍</div>
@@ -599,7 +587,6 @@
           </div>
           <button type="button" class="order-now-btn" data-name="Vip Like Tháng" data-unit="">🛒 Ấn Để Đặt hàng</button>
         </article>
-
       </div>
     </section>
 
@@ -611,12 +598,9 @@
         </div>
 
         <div class="payment-grid">
-
           <div class="payment-card">
             <div class="pay-head">
-              <div class="pay-logo">
-                <img src="images/logovcb.jpg" alt="Vietcombank">
-              </div>
+              <div class="pay-logo"><img src="images/logovcb.jpg" alt="Vietcombank"></div>
               <div><h3>Vietcombank</h3><p>Chuyển khoản ngân hàng</p></div>
             </div>
             <div class="pay-info">
@@ -629,9 +613,7 @@
 
           <div class="payment-card">
             <div class="pay-head">
-              <div class="pay-logo">
-                <img src="images/logovtb.jpg" alt="VietinBank">
-              </div>
+              <div class="pay-logo"><img src="images/logovtb.jpg" alt="VietinBank"></div>
               <div><h3>VietinBank</h3><p>Chuyển khoản ngân hàng</p></div>
             </div>
             <div class="pay-info">
@@ -641,7 +623,6 @@
             <button class="copy-btn" type="button" data-copy="107888416084">📋 Sao chép số TK</button>
             <button class="qr-btn" type="button" data-qr="images/qrvtb.jpg">Mở mã QR</button>
           </div>
-
         </div>
       </div>
     </section>
@@ -656,7 +637,6 @@
         </div>
 
         <div class="social-grid">
-
           <a class="social-item" href="https://zalo.me/0345085074" target="_blank" rel="noopener" aria-label="Zalo Personal">
             <div class="social-logo zalo">
               <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
@@ -700,7 +680,6 @@
             <p>Thành viên ưu tiên</p>
             <b>Tham gia →</b>
           </a>
-
         </div>
 
         <footer>
@@ -810,16 +789,13 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       🔐 AUTH MODAL — CHỈ GOOGLE LOGIN
-       ========================================================= -->
+  <!-- ===== AUTH MODAL ===== -->
   <div id="authModal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-labelledby="authTitle">
     <div class="auth-card">
       <div class="auth-logo">🎯</div>
       <h2 id="authTitle">Shop Tấn Đạt</h2>
       <p class="auth-sub">Đăng nhập bằng Google để tiếp tục</p>
 
-      <!-- CHỈ CÓ NÚT GOOGLE -->
       <div id="googleLoginWrap" class="google-login-wrap">
         <button type="button" id="googleLoginBtn" class="google-login-btn">
           <svg width="20" height="20" viewBox="0 0 48 48">
@@ -836,9 +812,7 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       🔔 THÔNG BÁO POPUP
-       ========================================================= -->
+  <!-- ===== THÔNG BÁO POPUP ===== -->
   <div id="successPopup" class="notify-popup hidden" role="alertdialog" aria-live="polite">
     <div class="notify-card">
       <button id="successClose" class="notify-close" type="button" aria-label="Đóng">×</button>
@@ -929,9 +903,7 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       📜 MODAL LỊCH SỬ MUA HÀNG
-       ========================================================= -->
+  <!-- ===== LỊCH SỬ MUA HÀNG ===== -->
   <div id="historyModal" class="history-modal hidden" role="dialog" aria-modal="true" aria-labelledby="historyTitle">
     <div class="history-card">
       <button id="historyClose" class="history-close" type="button" aria-label="Đóng">×</button>
@@ -942,8 +914,7 @@
         <p class="history-sub">Xem lại các đơn bạn đã đặt</p>
       </div>
 
-      <div id="historyList" class="history-list">
-      </div>
+      <div id="historyList" class="history-list"></div>
 
       <div class="history-actions">
         <button id="historyClearAll" class="history-clear-btn" type="button">
@@ -969,20 +940,15 @@
 
   <!-- JS -->
   <script src="main.js"></script>
-  <!-- Chatway Live Chat -->
   <script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=JRgTqdKzBMkI"></script>
 
-  <!-- ===== PWA — Đăng ký Service Worker ===== -->
+  <!-- PWA Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
-          .then((reg) => {
-            console.log('✅ PWA Service Worker đã đăng ký:', reg.scope);
-          })
-          .catch((err) => {
-            console.warn('⚠️ Lỗi đăng ký PWA:', err);
-          });
+          .then((reg) => console.log('✅ SW:', reg.scope))
+          .catch((err) => console.warn('⚠️ SW error:', err));
       });
     }
   </script>
