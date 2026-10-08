@@ -28,14 +28,19 @@
   <!-- ===== VIDEO INTRO ===== -->
   <div id="videoIntro" class="video-intro">
     <video
-      id="introVideo"
-      class="intro-video"
-      playsinline
-      preload="auto"
-      muted>
-      <source src="intro.mp4" type="video/mp4">
-      Trình duyệt của bạn không hỗ trợ video.
-    </video>
+  id="introVideo"
+  class="intro-video"
+  playsinline
+  webkit-playsinline
+  muted
+  autoplay
+  preload="auto"
+  x5-playsinline
+  x5-video-player-type="h5"
+  x5-video-player-fullscreen="false">
+  <source src="intro.mp4" type="video/mp4; codecs=avc1.42E01E, mp4a.40.2">
+  Trình duyệt của bạn không hỗ trợ video.
+</video>
 
     <!-- Nút loa bật/tắt tiếng -->
     <button id="soundToggle" class="sound-toggle" type="button" aria-label="Bật/tắt tiếng">
