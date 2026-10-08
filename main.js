@@ -1280,3 +1280,67 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
 
   console.log('🔵 Google Login đã sẵn sàng');
 })();
+/* =========================================================
+   📱 PWA — NÚT CÀI ĐẶT APP
+   ========================================================= */
+let deferredPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  console.log('📱 PWA có thể cài đặt');
+  showInstallButton();
+});
+
+function showInstallButton() {
+  if (document.getElementById('pwaInstallBtn')) return;
+
+  const btn = document.createElement('button');
+  btn.id = 'pwaInstallBtn';
+  btn.innerHTML = '📱 Cài đặt App';
+  btn.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 99998;
+    padding: 12px 20px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(135deg, #22d3ee, #a855f7);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(168, 85, 247, 0.6);
+    animation: pwaPulse 2s ease-in-out infinite;
+  `;
+
+  btn.onclick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log('📱 User chọn:', outcome);
+    deferredPrompt = null;
+    btn.remove();
+  };
+
+  document.body.appendChild(btn);
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pwaPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+window.addEventListener('appinstalled', () => {
+  console.log('✅ Đã cài đặt PWA');
+  document.getElementById('pwaInstallBtn')?.remove();
+  deferredPrompt = null;
+});
+
+console.log('📱 PWA sẵn sàng');
