@@ -149,7 +149,7 @@ function handleNotifyLater() {
 })();
 
 /* =========================================================
-   📤 GỬI ĐƠN + ẢNH THANH TOÁN QUA TELEGRAM (1 TIN DUY NHẤT)
+   📤 GỬI ĐƠN + ẢNH THANH TOÁN QUA TELEGRAM
    ========================================================= */
 async function sendPhotoToTelegram(file, orderData) {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return { ok: false, error: 'missing_config' };
@@ -609,7 +609,6 @@ $$('[data-copy]').forEach(btn => {
       const user = getCurrentUser();
       if (user) {
         if (form.buyerName) form.buyerName.value = user.name;
-        /* CHỈ fill SĐT nếu KHÔNG PHẢI user Google */
         if (form.phone && !user.phone.startsWith('google_')) {
           form.phone.value = user.phone;
         }
@@ -639,7 +638,6 @@ $$('[data-copy]').forEach(btn => {
       const user = getCurrentUser();
       if (user) {
         if (form.buyerName) form.buyerName.value = user.name;
-        /* CHỈ fill SĐT nếu KHÔNG PHẢI user Google */
         if (form.phone && !user.phone.startsWith('google_')) {
           form.phone.value = user.phone;
         }
@@ -1013,6 +1011,7 @@ function clearAllHistory() {
 
 /* =========================================================
    🎬 VIDEO INTRO — Nút loa + Đếm ngược 5s + Phát nhạc sau intro
+   ✅ ĐÃ FIX SCROLL MOBILE
    ========================================================= */
 (function initVideoIntro() {
   const intro        = document.getElementById('videoIntro');
@@ -1025,7 +1024,11 @@ function clearAllHistory() {
 
   if (!intro || !video) return;
 
+  /* KHÓA SCROLL KHI INTRO MỞ — đủ cách để fix iOS/Android */
   document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
+  document.documentElement.style.overflow = 'hidden';
 
   video.muted = true;
   video.volume = 0.8;
@@ -1074,14 +1077,27 @@ function clearAllHistory() {
   video.addEventListener('ended', showEnterBtn);
   setTimeout(showEnterBtn, 60000);
 
+  /* ĐÓNG INTRO — MỞ LẠI SCROLL CHO MỌI THIẾT BỊ */
   function closeIntro() {
     intro.classList.add('fade-out');
     video.pause();
+
+    /* MỞ LẠI SCROLL — fix triệt để mobile */
     document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.width = '';
+    document.body.style.height = '';
+    document.documentElement.style.overflow = '';
+
+    /* Thêm class để CSS hỗ trợ */
+    document.body.classList.add('intro-closed');
+    document.documentElement.classList.add('intro-closed');
+
     clearInterval(countdownInterval);
 
     setTimeout(() => {
       intro.classList.add('hidden');
+      intro.style.display = 'none';
       document.dispatchEvent(new Event('introClosed'));
       console.log('✅ Intro đã đóng → phát nhạc nền');
     }, 650);
@@ -1090,11 +1106,27 @@ function clearAllHistory() {
   if (skipBtn)  skipBtn.addEventListener('click', closeIntro);
   if (enterBtn) enterBtn.addEventListener('click', closeIntro);
 
+  /* CHO PHÉP TAP VÀO VIDEO ĐỂ ĐÓNG INTRO (mobile) */
+  video.addEventListener('click', () => {
+    /* Nếu video đã bật tiếng → click đóng intro */
+    if (!video.muted) {
+      closeIntro();
+    }
+  });
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !intro.classList.contains('hidden')) {
       closeIntro();
     }
   });
+
+  /* FALLBACK: tự động đóng intro sau 60s dù user không làm gì */
+  setTimeout(() => {
+    if (!intro.classList.contains('hidden')) {
+      closeIntro();
+      console.log('⏰ Tự động đóng intro sau 60s');
+    }
+  }, 60000);
 
   console.log('🎬 Video intro sẵn sàng');
 })();
