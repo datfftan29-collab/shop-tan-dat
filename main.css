@@ -3162,101 +3162,7 @@ footer a:hover { color: #a78bfa; }
   );
   animation: skeleton-shimmer 1.4s infinite;
 }
-/* =========================================================
-   🎬 VIDEO INTRO
-   ========================================================= */
-.video-intro {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  opacity: 1;
-  transition: opacity .6s ease;
-}
 
-.video-intro.hidden {
-  display: none;
-}
-
-.video-intro.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.intro-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-
-.skip-intro:hover {
-  background: rgba(255, 255, 255, .15);
-  border-color: rgba(255, 255, 255, .6);
-  transform: scale(1.05);
-}
-
-/* Nút vào shop — giữa màn hình */
-.enter-shop {
-  position: absolute;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 32px;
-  border-radius: 50px;
-  border: none;
-  background: linear-gradient(135deg, #22d3ee, #a855f7);
-  color: #fff;
-  font-size: 18px;
-  font-weight: 800;
-  font-family: inherit;
-  cursor: pointer;
-  box-shadow: 0 10px 40px rgba(168, 85, 247, .6);
-  transition: transform .2s, box-shadow .2s;
-  animation: enter-shop-bounce 2s ease-in-out infinite;
-}
-
-.enter-shop:hover {
-  transform: translateX(-50%) translateY(-3px) scale(1.05);
-  box-shadow: 0 14px 50px rgba(168, 85, 247, .8);
-  animation: none;
-}
-
-.enter-shop.hidden { display: none; }
-
-.enter-shop-icon {
-  font-size: 24px;
-  line-height: 1;
-}
-
-@keyframes enter-shop-bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50%      { transform: translateX(-50%) translateY(-8px); }
-}
-
-/* Mobile */
-@media (max-width: 600px) {
-  .skip-intro {
-    top: 14px;
-    right: 14px;
-    padding: 8px 14px;
-    font-size: 13px;
-  }
-  .enter-shop {
-    bottom: 40px;
-    padding: 14px 26px;
-    font-size: 16px;
-  }
-}
 /* =========================================================
    🔵 ĐĂNG NHẬP GOOGLE
    ========================================================= */
@@ -3319,161 +3225,7 @@ footer a:hover { color: #a78bfa; }
   height: 1px;
   background: rgba(255,255,255,.1);
 }
-/* =========================================================
-   ▶ NÚT PLAY VIDEO INTRO — Bấm để phát có tiếng
-   ========================================================= */
-.start-video-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  padding: 24px 42px;
-  border-radius: 60px;
-  border: 2px solid rgba(255, 255, 255, .4);
-  background: rgba(0, 0, 0, .65);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  color: #fff;
-  font-size: 18px;
-  font-weight: 800;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all .3s;
-  animation: pulse-play 2s ease-in-out infinite;
-}
 
-.start-video-btn:hover {
-  background: rgba(168, 85, 247, .5);
-  border-color: #a855f7;
-  transform: translate(-50%, -50%) scale(1.08);
-  animation: none;
-}
-
-.start-video-btn.hidden {
-  display: none;
-}
-
-.start-video-btn .start-icon {
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #22d3ee, #a855f7);
-  display: grid;
-  place-items: center;
-  font-size: 30px;
-  padding-left: 6px;
-  box-shadow: 0 10px 40px rgba(168, 85, 247, .7);
-}
-
-@keyframes pulse-play {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50%      { transform: translate(-50%, -50%) scale(1.05); }
-}
-
-@media (max-width: 600px) {
-  .start-video-btn {
-    padding: 18px 30px;
-    font-size: 15px;
-  }
-  .start-video-btn .start-icon {
-    width: 54px;
-    height: 54px;
-    font-size: 24px;
-  }
-}
-/* =========================================================
-   🎬 VIDEO INTRO MỚI — Nút loa + Đếm ngược 5s
-   ========================================================= */
-
-
-.sound-toggle:hover {
-  background: rgba(168, 85, 247, .5);
-  border-color: #a855f7;
-  transform: scale(1.1);
-  animation: none;
-}
-
-.sound-toggle.on {
-  background: linear-gradient(135deg, #22d3ee, #a855f7);
-  border-color: #a855f7;
-  box-shadow: 0 0 30px rgba(168, 85, 247, .7);
-}
-
-@keyframes sound-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, .4); }
-  50%      { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
-}
-
-
-
-.countdown-circle {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  border: 4px solid rgba(255, 255, 255, .35);
-  background: rgba(0, 0, 0, .5);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  display: grid;
-  place-items: center;
-  position: relative;
-  box-shadow: 0 0 40px rgba(168, 85, 247, .5);
-}
-
-.countdown-circle::before {
-  content: '';
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 3px solid transparent;
-  border-top-color: #22d3ee;
-  border-right-color: #a855f7;
-  animation: countdown-spin 1s linear infinite;
-}
-
-.countdown-circle span {
-  font-size: 42px;
-  font-weight: 900;
-  background: linear-gradient(135deg, #22d3ee, #a855f7);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.intro-countdown p {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, .8);
-}
-
-.intro-countdown p b {
-  color: #22d3ee;
-  font-weight: 900;
-}
-
-@keyframes countdown-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-@keyframes fadeInCountdown {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(.8); }
-  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-
-@media (max-width: 600px) {
-  .countdown-circle { width: 90px; height: 90px; }
-  .countdown-circle span { font-size: 34px; }
-  .intro-countdown p { font-size: 13px; }
-  .sound-toggle { width: 46px; height: 46px; font-size: 20px; top: 14px; right: 14px; }
-}
 /* =========================================================
    🎬 VIDEO INTRO MỚI — Nút loa + Đếm ngược 5s (dưới cùng)
    ========================================================= */
@@ -3622,18 +3374,7 @@ footer a:hover { color: #a78bfa; }
   .sound-toggle { width: 44px; height: 44px; font-size: 20px; top: 14px; right: 140px; }
   .skip-intro { top: 14px; right: 14px; padding: 8px 14px; font-size: 13px; }
 }
-/* =========================================================
-   📱 FIX SCROLL MOBILE — khi intro đóng
-   ========================================================= */
-body.intro-closed,
-html.intro-closed {
-  overflow: auto !important;
-  position: static !important;
-  height: auto !important;
-  width: auto !important;
-  touch-action: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-}
+
 /* =========================================================
    📱 FIX MODAL TRÊN MOBILE — THU NHỎ + LƯỚT ĐƯỢC
    ========================================================= */
@@ -4030,4 +3771,182 @@ html.intro-closed {
   .form-actions button { padding: 10px !important; font-size: 11.5px !important; }
 
   .qr-frame { max-width: 160px !important; }
+}
+/* =========================================================
+   📲 PWA INSTALL POPUP — STYLE MỚI
+   ========================================================= */
+.pwa-install-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  background: rgba(5, 5, 8, .88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  animation: fadeIn .3s ease;
+  overflow-y: auto;
+}
+.pwa-install-modal.hidden { display: none; }
+
+.pwa-install-card {
+  position: relative;
+  width: min(420px, 100%);
+  background: linear-gradient(160deg, #131320, #0c0c14);
+  border: 1px solid rgba(139, 92, 246, .35);
+  border-radius: 26px;
+  padding: 32px 26px 24px;
+  box-shadow: 0 40px 100px #000c, 0 0 60px rgba(139, 92, 246, .25);
+  animation: popIn .4s cubic-bezier(.2, 1.2, .3, 1);
+  text-align: center;
+}
+
+.pwa-install-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #ffffff0a;
+  color: #888;
+  font-size: 22px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  transition: background .2s, color .2s;
+  cursor: pointer;
+}
+.pwa-install-close:hover {
+  background: #ffffff1a;
+  color: #fff;
+}
+
+.pwa-install-icon {
+  font-size: 54px;
+  line-height: 1;
+  margin-bottom: 14px;
+  filter: drop-shadow(0 12px 30px rgba(139, 92, 246, .5));
+  animation: pwaBounce 2.5s ease-in-out infinite;
+}
+@keyframes pwaBounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.pwa-install-title {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+  background: linear-gradient(90deg, #c4b5fd, #e879f9, #67e8f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.pwa-install-sub {
+  margin: 0 0 20px;
+  font-size: 12.5px;
+  color: #9a9aaa;
+  line-height: 1.6;
+}
+
+.pwa-install-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.pwa-feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #ffffff05;
+  border: 1px solid rgba(255,255,255,.06);
+  font-size: 11.5px;
+  color: #c5c5d0;
+  text-align: left;
+  transition: background .2s, border-color .2s;
+}
+.pwa-feature:hover {
+  background: #ffffff0a;
+  border-color: rgba(139, 92, 246, .25);
+}
+
+.pwa-feature-icon {
+  font-size: 16px;
+  flex: none;
+}
+
+.pwa-install-actions {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.pwa-install-btn {
+  padding: 14px;
+  border-radius: 13px;
+  background: linear-gradient(110deg, #8b5cf6, #c026d3);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: .3px;
+  box-shadow: 0 12px 30px rgba(139, 92, 246, .45);
+  transition: transform .2s, box-shadow .2s;
+  cursor: pointer;
+}
+.pwa-install-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(139, 92, 246, .65);
+}
+
+.pwa-later-btn {
+  padding: 11px;
+  border-radius: 11px;
+  background: #ffffff08;
+  color: #999;
+  font-size: 12.5px;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,.08);
+  transition: background .2s, color .2s;
+  cursor: pointer;
+}
+.pwa-later-btn:hover {
+  background: #ffffff12;
+  color: #ddd;
+}
+
+.pwa-install-note {
+  margin: 14px 0 0;
+  font-size: 10.5px;
+  color: #6f6f7b;
+  line-height: 1.6;
+  min-height: 14px;
+}
+
+/* Responsive */
+@media (max-width: 560px) {
+  .pwa-install-card {
+    padding: 26px 18px 18px;
+    border-radius: 22px;
+  }
+  .pwa-install-icon { font-size: 44px; margin-bottom: 12px; }
+  .pwa-install-title { font-size: 18px; }
+  .pwa-install-sub { font-size: 11.5px; margin-bottom: 16px; }
+  .pwa-install-features { gap: 6px; margin-bottom: 18px; }
+  .pwa-feature { padding: 8px 10px; font-size: 10.5px; gap: 6px; }
+  .pwa-feature-icon { font-size: 14px; }
+  .pwa-install-btn { padding: 12px; font-size: 13px; }
+  .pwa-later-btn { padding: 9px; font-size: 11.5px; }
+}
+
+/* Ẩn khi đã cài PWA */
+@media (display-mode: standalone) {
+  .pwa-install-modal { display: none !important; }
 }
