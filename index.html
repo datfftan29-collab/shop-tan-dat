@@ -21,6 +21,16 @@
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
+  <!-- ===== PWA ===== -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#07070a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Shop Tấn Đạt">
+  <link rel="apple-touch-icon" href="ivconadr.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="ivconadr.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="ivconios.png">
+
   <link rel="stylesheet" href="main.css">
 </head>
 <body>
@@ -28,19 +38,19 @@
   <!-- ===== VIDEO INTRO ===== -->
   <div id="videoIntro" class="video-intro">
     <video
-  id="introVideo"
-  class="intro-video"
-  playsinline
-  webkit-playsinline
-  muted
-  autoplay
-  preload="auto"
-  x5-playsinline
-  x5-video-player-type="h5"
-  x5-video-player-fullscreen="false">
-  <source src="intro.mp4" type="video/mp4; codecs=avc1.42E01E, mp4a.40.2">
-  Trình duyệt của bạn không hỗ trợ video.
-</video>
+      id="introVideo"
+      class="intro-video"
+      playsinline
+      webkit-playsinline
+      muted
+      autoplay
+      preload="auto"
+      x5-playsinline
+      x5-video-player-type="h5"
+      x5-video-player-fullscreen="false">
+      <source src="intro.mp4" type="video/mp4; codecs=avc1.42E01E, mp4a.40.2">
+      Trình duyệt của bạn không hỗ trợ video.
+    </video>
 
     <!-- Nút loa bật/tắt tiếng -->
     <button id="soundToggle" class="sound-toggle" type="button" aria-label="Bật/tắt tiếng">
@@ -961,5 +971,20 @@
   <script src="main.js"></script>
   <!-- Chatway Live Chat -->
   <script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=JRgTqdKzBMkI"></script>
+
+  <!-- ===== PWA — Đăng ký Service Worker ===== -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((reg) => {
+            console.log('✅ PWA Service Worker đã đăng ký:', reg.scope);
+          })
+          .catch((err) => {
+            console.warn('⚠️ Lỗi đăng ký PWA:', err);
+          });
+      });
+    }
+  </script>
 </body>
 </html>
