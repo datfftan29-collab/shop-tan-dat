@@ -3623,3 +3623,15 @@ footer a:hover { color: #a78bfa; }
   .sound-toggle { width: 44px; height: 44px; font-size: 20px; top: 14px; right: 140px; }
   .skip-intro { top: 14px; right: 14px; padding: 8px 14px; font-size: 13px; }
 }
+/* =========================================================
+   📱 FIX SCROLL MOBILE — khi intro đóng
+   ========================================================= */
+body.intro-closed,
+html.intro-closed {
+  overflow: auto !important;
+  position: static !important;
+  height: auto !important;
+  width: auto !important;
+  touch-action: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
