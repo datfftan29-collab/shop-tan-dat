@@ -107,9 +107,12 @@ function closeSuccessPopup() {
 function handleNotifyOk() { closeSuccessPopup(); }
 function handleNotifyLater() {
   closeSuccessPopup();
-  try { localStorage.setItem('notifySnoozeUntil', String(Date.now() + 60 * 60 * 1000)); } catch {}
+  // ← Không lưu snooze nữa → lần sau load lại vẫn hiện
 }
 
+/* =========================================================
+   🔐 INIT AUTH — Kiểm tra login + hiện notify mỗi lần load
+   ========================================================= */
 (function initAuth() {
   const authModal    = $('#authModal');
   const logoutBtn    = $('#logoutBtn');
@@ -124,6 +127,11 @@ function handleNotifyLater() {
   } else {
     authModal.classList.add('hidden');
     updateUserUI();
+
+    // ⭐ HIỆN NOTIFY POPUP MỖI LẦN LOAD (sau 2 giây)
+    setTimeout(() => {
+      showSuccessPopup('Thông báo', 'SHOP TẤN ĐẠT');
+    }, 2000);
   }
 
   logoutBtn?.addEventListener('click', () => {
@@ -338,7 +346,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   });
 
   renderPlaylist();
-  loadTrack(3, false);
+  loadTrack(5, false);
 
   /* Autoplay sau lần tương tác đầu tiên */
   let autoplayTried = false;
@@ -1104,7 +1112,7 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
 })();
 
 /* =========================================================
-   📲 PWA INSTALL POPUP
+   📲 PWA INSTALL POPUP — Hiện mỗi lần load
    ========================================================= */
 (function initPwaPopup() {
   const modal     = document.getElementById('pwaInstallModal');
@@ -1115,8 +1123,6 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
 
   if (!modal) return;
 
-  const DISMISS_KEY = 'pwaPopupDismissedAt';
-  const DISMISS_DAYS = 3;
   const SHOW_DELAY = 4000;
 
   let deferredPrompt = null;
@@ -1126,13 +1132,9 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
         || window.navigator.standalone === true;
   }
 
+  // ⭐ Luôn hiện mỗi lần load (trừ khi đã cài PWA)
   function shouldShow() {
     if (isPwaInstalled()) return false;
-    const dismissedAt = localStorage.getItem(DISMISS_KEY);
-    if (dismissedAt) {
-      const days = (Date.now() - parseInt(dismissedAt, 10)) / 86400000;
-      if (days < DISMISS_DAYS) return false;
-    }
     return true;
   }
 
@@ -1141,11 +1143,9 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
     modal.classList.remove('hidden');
   }
 
-  function closePopup(saveDismiss = true) {
+  // ⭐ Đóng popup — KHÔNG lưu localStorage → lần sau load lại vẫn hiện
+  function closePopup() {
     modal.classList.add('hidden');
-    if (saveDismiss) {
-      try { localStorage.setItem(DISMISS_KEY, Date.now().toString()); } catch {}
-    }
   }
 
   function isIOS() {
@@ -1169,10 +1169,17 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
     setTimeout(openPopup, SHOW_DELAY);
   });
 
-  /* Fallback cho iOS */
-  if (isIOS() && shouldShow()) {
+  /* Fallback cho iOS — vẫn hiện sau 4s */
+  if (isIOS()) {
     setTimeout(openPopup, SHOW_DELAY);
   }
+
+  /* Fallback cho browser khác (nếu không có beforeinstallprompt sau 5s) */
+  setTimeout(() => {
+    if (!deferredPrompt && !isPwaInstalled()) {
+      openPopup();
+    }
+  }, SHOW_DELAY + 1000);
 
   /* Nút Cài đặt */
   installBtn?.addEventListener('click', async () => {
@@ -1184,35 +1191,31 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
     const { outcome } = await deferredPrompt.userChoice;
     console.log('📱 User chọn:', outcome);
     deferredPrompt = null;
-    if (outcome === 'accepted') {
-      closePopup(false);
-    } else {
-      closePopup(true);
-    }
+    closePopup();
   });
 
   /* Nút Để sau */
-  laterBtn?.addEventListener('click', () => closePopup(true));
+  laterBtn?.addEventListener('click', () => closePopup());
 
   /* Nút X */
-  closeBtn?.addEventListener('click', () => closePopup(true));
+  closeBtn?.addEventListener('click', () => closePopup());
 
   /* Click nền đóng */
   modal.addEventListener('click', (e) => {
-    if (e.target === modal) closePopup(true);
+    if (e.target === modal) closePopup();
   });
 
   /* ESC đóng */
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closePopup(true);
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closePopup();
   });
 
   /* Khi cài xong */
   window.addEventListener('appinstalled', () => {
     console.log('✅ Đã cài PWA');
-    closePopup(false);
+    closePopup();
     deferredPrompt = null;
   });
 
-  console.log('📲 PWA Popup sẵn sàng');
+  console.log('📲 PWA Popup sẵn sàng — hiện mỗi lần load');
 })();
