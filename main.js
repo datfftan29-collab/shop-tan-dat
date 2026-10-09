@@ -107,7 +107,7 @@ function closeSuccessPopup() {
 function handleNotifyOk() { closeSuccessPopup(); }
 function handleNotifyLater() {
   closeSuccessPopup();
-  // ← Không lưu snooze nữa → lần sau load lại vẫn hiện
+  // ← Không lưu snooze → lần sau load lại vẫn hiện
 }
 
 /* =========================================================
@@ -346,7 +346,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   });
 
   renderPlaylist();
-  loadTrack(5, false);
+  loadTrack(3, false);
 
   /* Autoplay sau lần tương tác đầu tiên */
   let autoplayTried = false;
@@ -1132,7 +1132,6 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
         || window.navigator.standalone === true;
   }
 
-  // ⭐ Luôn hiện mỗi lần load (trừ khi đã cài PWA)
   function shouldShow() {
     if (isPwaInstalled()) return false;
     return true;
@@ -1143,7 +1142,6 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
     modal.classList.remove('hidden');
   }
 
-  // ⭐ Đóng popup — KHÔNG lưu localStorage → lần sau load lại vẫn hiện
   function closePopup() {
     modal.classList.add('hidden');
   }
@@ -1155,13 +1153,12 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
   function showGuideText() {
     if (!guideText) return;
     if (isIOS()) {
-      guideText.textContent = '📱 Trên iPhone/iPad: Mở menu trình duyệt (⋮) → chọn "Cài đặt ứng dụng" hoặc "Thêm vào Màn hình chính".';
+      guideText.textContent = '📱 Trên iPhone/iPad: Nhấn nút Chia sẻ (□↑) → chọn "Thêm vào màn hình chính" → nhấn "Thêm".';
     } else {
-      guideText.textContent = '📱 Trên Android: Mở menu trình duyệt → chọn "Cài đặt ứng dụng" ';
+      guideText.textContent = '📱 Trên Android: Mở menu trình duyệt (⋮) → chọn "Cài đặt ứng dụng" hoặc "Thêm vào Màn hình chính".';
     }
   }
 
-  /* Bắt sự kiện trình duyệt cho phép cài */
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -1169,19 +1166,16 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
     setTimeout(openPopup, SHOW_DELAY);
   });
 
-  /* Fallback cho iOS — vẫn hiện sau 4s */
   if (isIOS()) {
     setTimeout(openPopup, SHOW_DELAY);
   }
 
-  /* Fallback cho browser khác (nếu không có beforeinstallprompt sau 5s) */
   setTimeout(() => {
     if (!deferredPrompt && !isPwaInstalled()) {
       openPopup();
     }
   }, SHOW_DELAY + 1000);
 
-  /* Nút Cài đặt */
   installBtn?.addEventListener('click', async () => {
     if (!deferredPrompt) {
       showGuideText();
@@ -1194,23 +1188,17 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
     closePopup();
   });
 
-  /* Nút Để sau */
   laterBtn?.addEventListener('click', () => closePopup());
-
-  /* Nút X */
   closeBtn?.addEventListener('click', () => closePopup());
 
-  /* Click nền đóng */
   modal.addEventListener('click', (e) => {
     if (e.target === modal) closePopup();
   });
 
-  /* ESC đóng */
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !modal.classList.contains('hidden')) closePopup();
   });
 
-  /* Khi cài xong */
   window.addEventListener('appinstalled', () => {
     console.log('✅ Đã cài PWA');
     closePopup();
@@ -1219,6 +1207,7 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
 
   console.log('📲 PWA Popup sẵn sàng — hiện mỗi lần load');
 })();
+
 /* =========================================================
    📲 NÚT TẢI APP VỀ MÀN HÌNH CHÍNH
    ========================================================= */
@@ -1252,22 +1241,36 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
   function showInstructionPopup(os) {
     const modal = document.createElement('div');
     modal.className = 'app-install-guide';
+
+    const icon = os === 'ios' ? '🍎' : '🤖';
+    const title = os === 'ios'
+      ? 'Cài đặt trên iPhone / iPad'
+      : 'Cài đặt trên Android';
+
+    let steps = '';
+    if (os === 'ios') {
+      steps = `
+        <p><b>Bước 1:</b> Mở web bằng <b>Safari</b> (không phải Chrome)</p>
+        <p><b>Bước 2:</b> Nhấn nút <b>Chia sẻ</b> (□↑) ở giữa dưới màn hình</p>
+        <p><b>Bước 3:</b> Cuộn xuống, chọn <b>"Thêm vào Màn hình chính"</b></p>
+        <p><b>Bước 4:</b> Đặt tên → nhấn <b>"Thêm"</b> ở góc phải trên</p>
+      `;
+    } else {
+      steps = `
+        <p><b>Bước 1:</b> Mở web bằng <b>Chrome</b></p>
+        <p><b>Bước 2:</b> Nhấn menu <b>⋮</b> (3 chấm) ở góc phải trên</p>
+        <p><b>Bước 3:</b> Chọn <b>"Cài đặt ứng dụng"</b> hoặc <b>"Thêm vào Màn hình chính"</b></p>
+        <p><b>Bước 4:</b> Nhấn <b>"Cài đặt"</b></p>
+      `;
+    }
+
     modal.innerHTML = `
       <div class="app-install-guide-card">
         <button class="app-install-guide-close" onclick="this.closest('.app-install-guide').remove()">×</button>
-        <div class="app-install-guide-icon">${os === 'ios' ? '🍎' : '🤖'}</div>
-        <h3>${os === 'ios' ? 'Cài đặt trên iPhone/iPad' : 'Cài đặt trên ADR'}</h3>
+        <div class="app-install-guide-icon">${icon}</div>
+        <h3>${title}</h3>
         <div class="app-install-guide-steps">
-          ${os === 'ios' ? `
-            <p><b>Bước 1:</b> Mở web bằng <b>Safari</b> (không phải Chrome)</p>
-            <p><b>Bước 2:</b> Nhấn 3 chấm <b>Chia sẻ</b> (□↑) ở dưới cùng</p>
-            <p><b>Bước 3:</b> Cuộn xuống, chọn <b>"Thêm vào Màn hình chính"</b></p>
-            <p><b>Bước 4:</b> Đặt tên → nhấn <b>"Thêm"</b></p>
-          ` : `
-            <p><b>Bước 1:</b> Mở web bằng <b>Chrome</b></p>
-            <p><b>Bước 2:</b> Chọn <b>"Cài đặt ứng dụng"</b>
-            <p><b>Bước 3:</b> Nhấn <b>"Cài đặt"</b></p>
-          `}
+          ${steps}
         </div>
         <button class="app-install-guide-ok" onclick="this.closest('.app-install-guide').remove()">Đã hiểu</button>
       </div>
