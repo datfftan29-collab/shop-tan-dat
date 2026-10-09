@@ -3802,3 +3802,143 @@ footer a:hover { color: #a78bfa; }
 @media (display-mode: standalone) {
   .pwa-install-modal { display: none !important; }
 }
+/* =========================================================
+   📲 NÚT TẢI APP VỀ MÀN HÌNH CHÍNH
+   ========================================================= */
+.download-app-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 16px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #22d3ee, #a855f7);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(168, 85, 247, .4);
+  transition: transform .2s, box-shadow .2s;
+  white-space: nowrap;
+  border: none;
+  animation: downloadPulse 2.5s ease-in-out infinite;
+}
+.download-app-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(168, 85, 247, .6);
+  animation: none;
+}
+@keyframes downloadPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+@media (max-width: 560px) {
+  .download-app-btn {
+    padding: 10px 12px;
+    font-size: 0;
+  }
+  .download-app-btn::before {
+    content: '📲';
+    font-size: 20px;
+  }
+}
+@media (display-mode: standalone) {
+  .download-app-btn { display: none !important; }
+}
+
+/* =========================================================
+   📲 POPUP HƯỚNG DẪN CÀI ĐẶT APP
+   ========================================================= */
+.app-install-guide {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(5, 5, 8, .9);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  animation: fadeIn .3s ease;
+}
+.app-install-guide-card {
+  position: relative;
+  width: min(400px, 100%);
+  background: linear-gradient(160deg, #131320, #0c0c14);
+  border: 1px solid rgba(139, 92, 246, .35);
+  border-radius: 24px;
+  padding: 30px 24px 22px;
+  box-shadow: 0 40px 100px #000c, 0 0 60px rgba(139, 92, 246, .25);
+  text-align: center;
+  animation: popIn .35s cubic-bezier(.2, 1.2, .3, 1);
+}
+.app-install-guide-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #ffffff0a;
+  color: #888;
+  font-size: 22px;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.app-install-guide-close:hover {
+  background: #ffffff1a;
+  color: #fff;
+}
+.app-install-guide-icon {
+  font-size: 52px;
+  line-height: 1;
+  margin-bottom: 14px;
+  filter: drop-shadow(0 12px 30px rgba(139, 92, 246, .5));
+}
+.app-install-guide-card h3 {
+  margin: 0 0 18px;
+  font-size: 20px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #c4b5fd, #e879f9, #67e8f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.app-install-guide-steps {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+.app-install-guide-steps p {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #ffffff05;
+  border: 1px solid rgba(255,255,255,.06);
+  font-size: 13px;
+  line-height: 1.5;
+  color: #c5c5d0;
+}
+.app-install-guide-steps b {
+  color: #a78bfa;
+  font-weight: 800;
+}
+.app-install-guide-ok {
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(110deg, #8b5cf6, #c026d3);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(139, 92, 246, .45);
+  transition: transform .2s;
+}
+.app-install-guide-ok:hover {
+  transform: translateY(-2px);
+}
