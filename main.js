@@ -1155,9 +1155,9 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
   function showGuideText() {
     if (!guideText) return;
     if (isIOS()) {
-      guideText.textContent = '📱 Trên iPhone/iPad: Nhấn nút Chia sẻ (□↑) → chọn "Thêm vào màn hình chính" → nhấn "Thêm".';
+      guideText.textContent = '📱 Trên iPhone/iPad: Mở menu trình duyệt (⋮) → chọn "Cài đặt ứng dụng" hoặc "Thêm vào Màn hình chính".';
     } else {
-      guideText.textContent = '📱 Trên Android: Mở menu trình duyệt (⋮) → chọn "Cài đặt ứng dụng" hoặc "Thêm vào Màn hình chính".';
+      guideText.textContent = '📱 Trên Android: Mở menu trình duyệt → chọn "Cài đặt ứng dụng" ';
     }
   }
 
@@ -1218,4 +1218,85 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
   });
 
   console.log('📲 PWA Popup sẵn sàng — hiện mỗi lần load');
+})();
+/* =========================================================
+   📲 NÚT TẢI APP VỀ MÀN HÌNH CHÍNH
+   ========================================================= */
+(function initDownloadAppBtn() {
+  const btn = document.getElementById('downloadAppBtn');
+  if (!btn) return;
+
+  function isPwaInstalled() {
+    return window.matchMedia('(display-mode: standalone)').matches
+        || window.navigator.standalone === true;
+  }
+  if (isPwaInstalled()) {
+    btn.style.display = 'none';
+    return;
+  }
+
+  let deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    console.log('📲 Nút tải app: Chrome sẵn sàng prompt');
+  });
+
+  function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  }
+  function isAndroid() {
+    return /Android/i.test(navigator.userAgent);
+  }
+
+  function showInstructionPopup(os) {
+    const modal = document.createElement('div');
+    modal.className = 'app-install-guide';
+    modal.innerHTML = `
+      <div class="app-install-guide-card">
+        <button class="app-install-guide-close" onclick="this.closest('.app-install-guide').remove()">×</button>
+        <div class="app-install-guide-icon">${os === 'ios' ? '🍎' : '🤖'}</div>
+        <h3>${os === 'ios' ? 'Cài đặt trên iPhone/iPad' : 'Cài đặt trên ADR'}</h3>
+        <div class="app-install-guide-steps">
+          ${os === 'ios' ? `
+            <p><b>Bước 1:</b> Mở web bằng <b>Safari</b> (không phải Chrome)</p>
+            <p><b>Bước 2:</b> Nhấn 3 chấm <b>Chia sẻ</b> (□↑) ở dưới cùng</p>
+            <p><b>Bước 3:</b> Cuộn xuống, chọn <b>"Thêm vào Màn hình chính"</b></p>
+            <p><b>Bước 4:</b> Đặt tên → nhấn <b>"Thêm"</b></p>
+          ` : `
+            <p><b>Bước 1:</b> Mở web bằng <b>Chrome</b></p>
+            <p><b>Bước 2:</b> Chọn <b>"Cài đặt ứng dụng"</b>
+            <p><b>Bước 3:</b> Nhấn <b>"Cài đặt"</b></p>
+          `}
+        </div>
+        <button class="app-install-guide-ok" onclick="this.closest('.app-install-guide').remove()">Đã hiểu</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.remove();
+    });
+  }
+
+  btn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log('📲 User chọn:', outcome);
+      deferredPrompt = null;
+      if (outcome === 'accepted') {
+        btn.style.display = 'none';
+      }
+      return;
+    }
+    if (isIOS()) {
+      showInstructionPopup('ios');
+    } else if (isAndroid()) {
+      showInstructionPopup('android');
+    } else {
+      showInstructionPopup('android');
+    }
+  });
+
+  console.log('📲 Nút tải app đã sẵn sàng');
 })();
