@@ -346,7 +346,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   });
 
   renderPlaylist();
-  loadTrack(3, false);
+  loadTrack(5, false);
 
   /* Autoplay sau lần tương tác đầu tiên */
   let autoplayTried = false;
