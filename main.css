@@ -3942,3 +3942,57 @@ footer a:hover { color: #a78bfa; }
 .app-install-guide-ok:hover {
   transform: translateY(-2px);
 }
+/* =========================================================
+   🔥 MARQUEE — CHỮ CHẠY TỪ PHẢI SANG TRÁI
+   Màu xanh dương trên nền đen huyền bí
+   ========================================================= */
+.marquee-wrap {
+  position: relative;
+  overflow: hidden;
+  background: #000000;
+  border-top: 1px solid rgba(34, 211, 238, .3);
+  border-bottom: 1px solid rgba(34, 211, 238, .3);
+  padding: 12px 0;
+  z-index: 35;
+  width: 100%;
+}
+
+/* Chữ chạy */
+.marquee-text {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  padding-left: 100%;       /* Bắt đầu từ ngoài mép phải */
+  color: #22d3ee;           /* Xanh dương cyan */
+  text-shadow: 
+    0 0 8px rgba(34, 211, 238, .8),
+    0 0 20px rgba(34, 211, 238, .5);
+  animation: marqueeRun 15s linear infinite;
+  will-change: transform;
+}
+
+@keyframes marqueeRun {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Pause khi hover */
+.marquee-wrap:hover .marquee-text {
+  animation-play-state: paused;
+}
+
+/* Mobile */
+@media (max-width: 560px) {
+  .marquee-wrap { padding: 10px 0; }
+  .marquee-text {
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    animation-duration: 12s;
+  }
+}
