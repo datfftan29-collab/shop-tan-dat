@@ -1146,8 +1146,9 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
     modal.classList.add('hidden');
   }
 
-  function isIOS() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+   function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent)
+        || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   }
 
   function showGuideText() {
@@ -1207,7 +1208,6 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
 
   console.log('📲 PWA Popup sẵn sàng — hiện mỗi lần load');
 })();
-
 /* =========================================================
    📲 NÚT TẢI APP VỀ MÀN HÌNH CHÍNH
    ========================================================= */
@@ -1231,13 +1231,56 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
     console.log('📲 Nút tải app: Chrome sẵn sàng prompt');
   });
 
+  // ===== DETECT OS & BROWSER CHÍNH XÁC =====
   function isIOS() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    return /iPad|iPhone|iPod/.test(navigator.userAgent)
+        || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   }
   function isAndroid() {
     return /Android/i.test(navigator.userAgent);
   }
+  function isChromeOnIOS() {
+    return isIOS() && /CriOS/.test(navigator.userAgent);
+  }
+  function isFirefoxOnIOS() {
+    return isIOS() && /FxiOS/.test(navigator.userAgent);
+  }
+  function isEdgeOnIOS() {
+    return isIOS() && /EdgiOS/.test(navigator.userAgent);
+  }
+  function isNotSafariOnIOS() {
+    return isChromeOnIOS() || isFirefoxOnIOS() || isEdgeOnIOS();
+  }
+  function isSafariOnIOS() {
+    return isIOS() && !isNotSafariOnIOS();
+  }
 
+  // ===== POPUP: MỞ BẰNG SAFARI =====
+  function showOpenSafariPopup() {
+    const modal = document.createElement('div');
+    modal.className = 'app-install-guide';
+    modal.innerHTML = `
+      <div class="app-install-guide-card">
+        <button class="app-install-guide-close" onclick="this.closest('.app-install-guide').remove()">×</button>
+        <div class="app-install-guide-icon">🧭</div>
+        <h3>Hãy mở bằng Safari</h3>
+        <div class="app-install-guide-steps">
+          <p><b>⚠️ Lưu ý:</b> Trên iPhone/iPad, chỉ có <b>Safari</b> mới cài được app vào Màn hình chính.</p>
+          <p><b>Bước 1:</b> Copy link web: <b>tandat.store</b></p>
+          <p><b>Bước 2:</b> Mở app <b>Safari</b> (biểu tượng la bàn 🧭)</p>
+          <p><b>Bước 3:</b> Dán link vào thanh địa chỉ → Enter</p>
+          <p><b>Bước 4:</b> Quay lại và bấm nút <b>"📲 Tải app"</b></p>
+        </div>
+        <button class="app-install-guide-ok" onclick="this.closest('.app-install-guide').remove()">Đã hiểu</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.remove();
+    });
+  }
+
+  // ===== POPUP: HƯỚNG DẪN CÀI (đã mở đúng Safari) =====
   function showInstructionPopup(os) {
     const modal = document.createElement('div');
     modal.className = 'app-install-guide';
@@ -1250,17 +1293,17 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
     let steps = '';
     if (os === 'ios') {
       steps = `
-        <p><b>Bước 1:</b> Mở web bằng <b>Safari</b> (không phải Chrome)</p>
-        <p><b>Bước 2:</b> Nhấn nút <b>Chia sẻ</b> (□↑) ở giữa dưới màn hình</p>
-        <p><b>Bước 3:</b> Cuộn xuống, chọn <b>"Thêm vào Màn hình chính"</b></p>
-        <p><b>Bước 4:</b> Đặt tên → nhấn <b>"Thêm"</b> ở góc phải trên</p>
+        <p><b>Bước 1:</b> Nhấn nút <b>Chia sẻ</b> (□↑) ở giữa dưới màn hình</p>
+        <p><b>Bước 2:</b> Cuộn xuống, chọn <b>"Thêm vào Màn hình chính"</b></p>
+        <p><b>Bước 3:</b> Đặt tên → nhấn <b>"Thêm"</b> ở góc phải trên</p>
+        <p>✅ Icon Shop Tấn Đạt sẽ xuất hiện trên màn hình chính!</p>
       `;
     } else {
       steps = `
-        <p><b>Bước 1:</b> Mở web bằng <b>Chrome</b></p>
-        <p><b>Bước 2:</b> Nhấn menu <b>⋮</b> (3 chấm) ở góc phải trên</p>
-        <p><b>Bước 3:</b> Chọn <b>"Cài đặt ứng dụng"</b> hoặc <b>"Thêm vào Màn hình chính"</b></p>
-        <p><b>Bước 4:</b> Nhấn <b>"Cài đặt"</b></p>
+        <p><b>Bước 1:</b> Nhấn menu <b>⋮</b> (3 chấm) ở góc phải trên</p>
+        <p><b>Bước 2:</b> Chọn <b>"Cài đặt ứng dụng"</b> hoặc <b>"Thêm vào Màn hình chính"</b></p>
+        <p><b>Bước 3:</b> Nhấn <b>"Cài đặt"</b></p>
+        <p>✅ Icon Shop Tấn Đạt sẽ xuất hiện trên màn hình chính!</p>
       `;
     }
 
@@ -1281,7 +1324,9 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
     });
   }
 
+  // ===== XỬ LÝ KHI BẤM NÚT =====
   btn.addEventListener('click', async () => {
+    // 1. Android Chrome có prompt cài → dùng luôn
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
@@ -1292,14 +1337,29 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
       }
       return;
     }
-    if (isIOS()) {
-      showInstructionPopup('ios');
-    } else if (isAndroid()) {
-      showInstructionPopup('android');
-    } else {
-      showInstructionPopup('android');
+
+    // 2. iOS dùng Chrome/Firefox/Edge → yêu cầu mở Safari
+    if (isNotSafariOnIOS()) {
+      showOpenSafariPopup();
+      return;
     }
+
+    // 3. iOS Safari → hiện hướng dẫn cài
+    if (isSafariOnIOS()) {
+      showInstructionPopup('ios');
+      return;
+    }
+
+    // 4. Android (không có prompt) → hiện hướng dẫn Android
+    if (isAndroid()) {
+      showInstructionPopup('android');
+      return;
+    }
+
+    // 5. Mặc định → Android
+    showInstructionPopup('android');
   });
 
   console.log('📲 Nút tải app đã sẵn sàng');
+  console.log('🔍 iOS?', isIOS(), '| Safari iOS?', isSafariOnIOS(), '| Android?', isAndroid());
 })();
