@@ -1,9 +1,9 @@
 /* =========================================================
-   SHOP TẤN ĐẠT — SERVICE WORKER (v13)
+   SHOP TẤN ĐẠT — SERVICE WORKER (v17)
    Chỉ cache ảnh/font — KHÔNG cache HTML/CSS/JS
    ========================================================= */
 
-const CACHE_NAME = 'shop-tan-dat-v13';  // ⬅️ Đổi số mỗi lần update
+const CACHE_NAME = 'shop-tan-dat-v17';  // ⬅️ Đổi số mỗi lần update
 
 // Chỉ cache file ít thay đổi (ảnh, icon)
 const ASSETS_TO_CACHE = [
@@ -16,12 +16,19 @@ const ASSETS_TO_CACHE = [
   '/images/logovcb.jpg',
   '/images/logovtb.jpg',
   '/images/qrvtb.jpg',
-  '/45.JPG'
+  '/45.JPG',
+  // ⬇️ 6 LOGO MỚI
+  '/lienquan.jpg',
+  '/freefire.jpg',
+  '/8ballpool.jpg',
+  '/playtogether.png',
+  '/tiktok.jpg',
+  '/facebook.jpg'
 ];
 
 /* Cài đặt — cache file tĩnh, bỏ qua file lỗi */
 self.addEventListener('install', (event) => {
-  console.log('🔧 SW đang cài đặt v13...');
+  console.log('🔧 SW đang cài đặt v17...');
   self.skipWaiting(); // Kích hoạt ngay, không chờ
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -38,7 +45,7 @@ self.addEventListener('install', (event) => {
 
 /* Kích hoạt — xóa TẤT CẢ cache cũ */
 self.addEventListener('activate', (event) => {
-  console.log('🚀 SW đang kích hoạt v13...');
+  console.log('🚀 SW đang kích hoạt v17...');
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
@@ -115,4 +122,4 @@ self.addEventListener('message', (event) => {
   }
 });
 
-console.log('✅ SW Shop Tấn Đạt v13 đã load');
+console.log('✅ SW Shop Tấn Đạt v17 đã load');
