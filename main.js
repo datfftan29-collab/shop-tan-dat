@@ -502,7 +502,7 @@ $$('[data-copy]').forEach(btn => {
   if (!modal || !form) return;
 
   const ACCOUNTS = {
-    bank: { name: 'Vietcombank', acc: '2345085074', owner: 'Nguyễn Tấn Đạt', qr: '45.jpg' },
+    bank: { name: 'Vietcombank', acc: '2345085074', owner: 'Nguyễn Tấn Đạt', qr: '45.JPG' },
     vietinbank: { name: 'VietinBank', acc: '107888416084', owner: 'Nguyễn Tấn Đạt', qr: 'images/qrvtb.jpg' }
   };
 
@@ -1208,6 +1208,7 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
 
   console.log('📲 PWA Popup sẵn sàng — hiện mỗi lần load');
 })();
+
 /* =========================================================
    📲 NÚT TẢI APP VỀ MÀN HÌNH CHÍNH
    ========================================================= */
