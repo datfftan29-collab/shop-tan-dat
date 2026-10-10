@@ -1364,3 +1364,390 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
   console.log('📲 Nút tải app đã sẵn sàng');
   console.log('🔍 iOS?', isIOS(), '| Safari iOS?', isSafariOnIOS(), '| Android?', isAndroid());
 })();
+/* =========================================================
+   💎 DỊCH VỤ PREMIUM — YOUTUBE / CAPCUT / CANVA (2 CỘT)
+   ========================================================= */
+(function initPremium() {
+  const modal = document.getElementById('premiumModal');
+  if (!modal) return;
+
+  // ==== ELEMENTS ====
+  const closeBtn    = document.getElementById('premiumCloseBtn');
+  const cancelBtn   = document.getElementById('premiumCancelBtn');
+  const confirmBtn  = document.getElementById('premiumConfirmBtn');
+
+  const productLogo  = document.getElementById('premiumProductLogo');
+  const productName  = document.getElementById('premiumProductName');
+  const productDesc  = document.getElementById('premiumProductDesc');
+  const productPrice = document.getElementById('premiumProductPrice');
+  const durationEl   = document.getElementById('premiumDuration');
+  const packageSel   = document.getElementById('premiumPackageSelect');
+  const guideText    = document.getElementById('premiumGuideText');
+
+  // Input mới
+  const buyerNameInput  = document.getElementById('premiumBuyerName');
+  const contactLabel    = document.getElementById('premiumContactLabel');
+  const buyerPhoneInput = document.getElementById('premiumBuyerPhone');
+
+  // Ảnh thanh toán
+  const fileInput    = document.getElementById('premiumPaymentProof');
+  const previewWrap  = document.getElementById('premiumPreviewWrap');
+  const previewImg   = document.getElementById('premiumPreviewImg');
+  const removeImgBtn = document.getElementById('premiumRemoveImg');
+
+  // QR + Bank
+  const qrImage       = document.getElementById('premiumQr');
+  const bankNameEl    = document.getElementById('premiumBankName');
+  const bankAccEl     = document.getElementById('premiumBankAcc');
+  const bankOwnerEl   = document.getElementById('premiumBankOwner');
+  const copyAccBtn    = document.getElementById('premiumCopyAcc');
+  const bankVcbBtn    = document.getElementById('premiumBankVcb');
+  const bankVtbBtn    = document.getElementById('premiumBankVtb');
+
+  const totalPrice = document.getElementById('premiumTotalPrice');
+
+  // ==== DATA ====
+  const ACCOUNTS = {
+    bank:       { name: 'Vietcombank', acc: '2345085074',   owner: 'Nguyễn Tấn Đạt', qr: '45.JPG' },
+    vietinbank: { name: 'VietinBank',  acc: '107888416084', owner: 'Nguyễn Tấn Đạt', qr: 'images/qrvtb.jpg' }
+  };
+
+  const PREMIUM_DATA = {
+    youtube: {
+      name: 'Youtube Premium',
+      logo: 'youtubepremium.jpg',
+      desc: 'Nâng Cấp Tài Khoản Youtube Premium Chính Chủ Đăng Ký Gmail Của Bạn + Tặng Kèm Canva Pro 1 Năm',
+      guide: 'Vui Lòng Nhập Gmail Cần Đăng Kí Gói Youtube Premium của bạn ( Không yêu cầu Password ) - Gia Hạn Vui Lòng Note Mail + Gia Hạn Để Tránh Bị Lỗi Mail Bị 12 Tháng Không Tham Gia Được Nhóm Gia Đình Mới - Ví Dụ: aaa@gmail.com gia hạn',
+      contactLabel: '📧 Gmail nhận gói YouTube:',
+      placeholder: 'Ví dụ: aaa@gmail.com',
+      inputType: 'email',
+      packages: [
+        { name: 'Nâng Cấp Chính Chủ Không Kèm Canva Pro Edu 1 Năm', price: 37800, duration: '30 ngày' },
+        { name: 'Nâng Cấp Chính Chủ Không Kèm Canva Pro Edu 1 Năm', price: 102200, duration: '3 tháng' },
+        { name: 'Nâng Cấp Chính Chủ + Tặng Kèm Canva Pro Edu 1 Năm', price: 193200, duration: '6 tháng' },
+        { name: 'Nâng Cấp Chính Chủ + Tặng Kèm Canva Pro Edu 1 Năm', price: 322000, duration: '9 tháng' },
+        { name: 'Nâng Cấp Chính Chủ + Tặng Kèm Canva Pro Edu 1 Năm', price: 546000, duration: '12 tháng' }
+      ]
+    },
+    capcut: {
+      name: 'Capcut Pro',
+      logo: 'capcutpro.png',
+      desc: 'Tài Khoản CapCut Pro Dùng Riêng Biệt (Đăng Nhập Được 2 Máy) - Loại Tài Khoản Có Hạn 6 Tháng Có Kèm 1000→1600 Credit',
+      guide: 'Vui Lòng Nhập Số Điện Thoại Để Được Hỗ Trợ Nhanh Nhất',
+      contactLabel: '📱 Số điện thoại liên hệ:',
+      placeholder: 'Ví dụ: 0345085074',
+      inputType: 'tel',
+      packages: [
+        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Hạn Sử Dụng Chỉ 6-7 Ngày', price: 28000, duration: '7 ngày' },
+        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Hạn Sử Dụng Đủ 1 Tháng', price: 105000, duration: '1 tháng' },
+        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Đổi Tài Khoản Hàng Tháng', price: 301000, duration: '3 tháng' },
+        { name: 'Nâng Cấp Tài Khoản Capcut Chính Chủ Trên Tài Khoản Của Bạn - 3 Máy', price: 371000, duration: '6 tháng' },
+        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Đổi Tài Khoản Hàng Tháng', price: 595000, duration: '9 tháng' },
+        { name: 'Nâng Cấp Tài Khoản Capcut Chính Chủ Trên Tài Khoản Của Bạn - 2 Máy', price: 721000, duration: '12 tháng' },
+        { name: 'Tài Khoản Capcut Cá Nhân Riêng Tư Hạn 12 Tháng 2 Máy', price: 966000, duration: '12 tháng' },
+        { name: 'Nâng Cấp Tài Khoản Capcut Chính Chủ 12 Tháng 2 Máy', price: 1050000, duration: '12 tháng' }
+      ]
+    },
+    canva: {
+      name: 'Canva Pro',
+      logo: 'canvapro.png',
+      desc: 'Nâng Cấp Tài Khoản Canva Pro Education Chính Chủ Đăng Ký Mail Của Bạn - Canva Pro Full Có Quyền Up Bộ Thương Hiệu',
+      guide: 'Vui Lòng Nhập Mail Bạn Cần Đăng Kí Gói Canva Pro Edu Chính Chủ ( Không yêu cầu Password ) - Chúng Tôi Sẽ Gửi Lời Mời Nâng Cấp Cho Bạn Tới Mail Của Bạn',
+      contactLabel: '📧 Mail nhận gói Canva Pro:',
+      placeholder: 'Ví dụ: aaa@gmail.com',
+      inputType: 'email',
+      packages: [
+        { name: 'Canva Education', price: 23800, duration: '30 ngày' },
+        { name: 'Canva Pro Full Tính Năng', price: 119000, duration: '90 ngày' },
+        { name: 'Canva Education', price: 44800, duration: '180 ngày' },
+        { name: 'Canva Pro Full Tính Năng', price: 245000, duration: '180 ngày' },
+        { name: 'Canva Education', price: 61600, duration: '360 ngày' },
+        { name: 'Canva Pro Full Tính Năng', price: 357000, duration: '360 ngày' }
+      ]
+    }
+  };
+
+  let currentService = null;
+  let currentPackage = null;
+  let currentBank = 'bank';
+
+  // ==== CHỌN NGÂN HÀNG ====
+  function setPremiumBank(method) {
+    currentBank = method;
+    const info = ACCOUNTS[method];
+    if (bankNameEl)  bankNameEl.textContent  = info.name;
+    if (bankAccEl)   bankAccEl.textContent   = info.acc;
+    if (bankOwnerEl) bankOwnerEl.textContent = info.owner;
+    if (qrImage)     qrImage.src             = info.qr;
+    if (copyAccBtn)  copyAccBtn.dataset.copy = info.acc;
+
+    bankVcbBtn?.classList.toggle('active', method === 'bank');
+    bankVtbBtn?.classList.toggle('active', method === 'vietinbank');
+  }
+
+  bankVcbBtn?.addEventListener('click', () => setPremiumBank('bank'));
+  bankVtbBtn?.addEventListener('click', () => setPremiumBank('vietinbank'));
+
+  // ==== UPLOAD ẢNH ====
+  fileInput?.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) {
+      previewWrap?.classList.add('hidden');
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      showToast('⚠️ Vui lòng chọn file ảnh.', 'error');
+      fileInput.value = '';
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('⚠️ Ảnh quá lớn (tối đa 5MB).', 'error');
+      fileInput.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (previewImg) previewImg.src = ev.target.result;
+      previewWrap?.classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  removeImgBtn?.addEventListener('click', () => {
+    if (fileInput) fileInput.value = '';
+    previewWrap?.classList.add('hidden');
+    if (previewImg) previewImg.src = '';
+  });
+
+  // ==== MỞ POPUP ====
+  function openPremiumModal(serviceKey) {
+    const data = PREMIUM_DATA[serviceKey];
+    if (!data) return;
+
+    currentService = serviceKey;
+    currentPackage = data.packages[0];
+
+    // Reset ảnh
+    if (fileInput) fileInput.value = '';
+    previewWrap?.classList.add('hidden');
+    if (previewImg) previewImg.src = '';
+
+    // Thông tin sản phẩm
+    if (productLogo) { productLogo.src = data.logo; productLogo.alt = data.name; }
+    if (productName) productName.textContent = data.name;
+    if (productDesc) productDesc.textContent = data.desc;
+    if (productPrice) productPrice.textContent = formatVND(currentPackage.price);
+
+    // Hướng dẫn
+    if (guideText) guideText.textContent = data.guide;
+
+    // Label liên hệ (Gmail / SĐT)
+    if (contactLabel) contactLabel.textContent = data.contactLabel;
+    if (buyerPhoneInput) {
+      buyerPhoneInput.type = data.inputType || 'text';
+      buyerPhoneInput.placeholder = data.placeholder;
+      buyerPhoneInput.value = '';
+    }
+
+    // Prefill nếu đã login
+    const u = getCurrentUser();
+    if (u) {
+      if (buyerNameInput) buyerNameInput.value = u.name || '';
+      if (buyerPhoneInput && data.inputType === 'email' && u.email) {
+        buyerPhoneInput.value = u.email;
+      }
+      if (buyerPhoneInput && data.inputType === 'tel' && u.phone && !u.phone.startsWith('google_')) {
+        buyerPhoneInput.value = u.phone;
+      }
+    }
+
+    // Dropdown gói
+    if (packageSel) {
+      packageSel.innerHTML = '';
+      data.packages.forEach((pkg, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `${pkg.name} — ${formatVND(pkg.price)}`;
+        packageSel.appendChild(opt);
+      });
+      packageSel.value = '0';
+    }
+
+    if (durationEl)  durationEl.textContent = currentPackage.duration;
+    if (totalPrice)  totalPrice.textContent = formatVND(currentPackage.price);
+
+    // Reset bank về VCB
+    setPremiumBank('bank');
+
+    modal.classList.remove('hidden');
+  }
+
+  function closePremiumModal() {
+    modal.classList.add('hidden');
+    currentService = null;
+    currentPackage = null;
+  }
+
+  // ==== ĐỔI GÓI ====
+  packageSel?.addEventListener('change', () => {
+    if (!currentService) return;
+    const data = PREMIUM_DATA[currentService];
+    const idx = Number(packageSel.value);
+    currentPackage = data.packages[idx];
+
+    if (productPrice) productPrice.textContent = formatVND(currentPackage.price);
+    if (durationEl)   durationEl.textContent  = currentPackage.duration;
+    if (totalPrice)   totalPrice.textContent  = formatVND(currentPackage.price);
+  });
+
+  // ==== GẮN SỰ KIỆN MUA NGAY ====
+  document.querySelectorAll('.premium-btn').forEach(btn => {
+    btn.addEventListener('click', () => openPremiumModal(btn.dataset.service));
+  });
+
+  closeBtn?.addEventListener('click', closePremiumModal);
+  cancelBtn?.addEventListener('click', closePremiumModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closePremiumModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) closePremiumModal();
+  });
+
+  // ==== VALIDATE ====
+  function validateContact(value, type) {
+    if (!value) return 'Vui lòng nhập thông tin liên hệ.';
+    if (type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      return 'Gmail không hợp lệ.';
+    }
+    if (type === 'tel' && !/^(0|\+84)[0-9]{9,10}$/.test(value.replace(/\s/g, ''))) {
+      return 'Số điện thoại không hợp lệ.';
+    }
+    return null;
+  }
+
+  // ==== THANH TOÁN ====
+  confirmBtn?.addEventListener('click', async () => {
+    if (!currentService || !currentPackage) return;
+
+    const data = PREMIUM_DATA[currentService];
+    const buyerName = (buyerNameInput?.value || '').trim();
+    const contactValue = (buyerPhoneInput?.value || '').trim();
+
+    // Validate Họ tên
+    if (buyerName.length < 2) {
+      showToast('⚠️ Vui lòng nhập họ tên đầy đủ.', 'error');
+      buyerNameInput?.focus();
+      return;
+    }
+
+    // Validate Gmail/SĐT
+    const err = validateContact(contactValue, data.inputType);
+    if (err) {
+      showToast('⚠️ ' + err, 'error');
+      buyerPhoneInput?.focus();
+      return;
+    }
+
+    // Validate ảnh
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+      showToast('⚠️ Vui lòng tải ảnh thanh toán lên.', 'error');
+      fileInput?.focus();
+      return;
+    }
+    const proofFile = fileInput.files[0];
+
+    const info = ACCOUNTS[currentBank];
+    const orderData = {
+      productName: data.name,
+      duration: currentPackage.duration,
+      packageName: currentPackage.name,
+      price: currentPackage.price,
+      buyerName: buyerName,
+      phone: contactValue,
+      method: info.name,
+      note: currentPackage.name
+    };
+
+    const originalText = confirmBtn.textContent;
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = '⏳ Đang gửi...';
+
+    const result = await sendPremiumPhotoToTelegram(proofFile, orderData);
+
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = originalText;
+
+    if (result.ok) {
+      const currentUser = getCurrentUser();
+      if (currentUser) saveOrderToHistory(orderData);
+
+      sendToSheet({
+        name: orderData.buyerName,
+        phone: orderData.phone,
+        product: `${orderData.productName} - ${orderData.packageName}`,
+        duration: orderData.duration,
+        price: orderData.price,
+        method: orderData.method,
+        action: 'order_premium'
+      });
+
+      showToast('✅ Đã gửi đơn thành công! Shop sẽ liên hệ sớm.');
+      setTimeout(() => closePremiumModal(), 1500);
+    } else {
+      showToast('❌ Không gửi được đơn. Vui lòng liên hệ Zalo: 0345085074', 'error', 4000);
+    }
+  });
+
+  // ==== GỬI TELEGRAM KÈM ẢNH ====
+  async function sendPremiumPhotoToTelegram(file, orderData) {
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) return { ok: false, error: 'missing_config' };
+    if (!file) return { ok: false, error: 'no_file' };
+
+    const now = new Date();
+    const timeStr = now.toLocaleString('vi-VN', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+
+    const currentUser = getCurrentUser();
+    const userInfo = currentUser ? `👤 <b>Tài khoản:</b> ${currentUser.name}\n` : '';
+
+    const caption =
+      `💎 <b>ĐƠN HÀNG PREMIUM MỚI</b>\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `📦 <b>Sản phẩm:</b> ${orderData.productName}\n` +
+      `🎁 <b>Gói:</b> ${orderData.packageName}\n` +
+      `⏱️ <b>Thời hạn:</b> ${orderData.duration}\n` +
+      `💰 <b>Số tiền:</b> ${formatVND(orderData.price)}\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      userInfo +
+      `📞 <b>Người nhận:</b> ${orderData.buyerName}\n` +
+      `📧 <b>Gmail/SĐT:</b> ${orderData.phone}\n` +
+      `💳 <b>Thanh toán:</b> ${orderData.method}\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `⏰ ${timeStr}`;
+
+    const formData = new FormData();
+    formData.append('chat_id', TELEGRAM_CHAT_ID);
+    formData.append('photo', file);
+    formData.append('caption', caption);
+    formData.append('parse_mode', 'HTML');
+
+    try {
+      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+        method: 'POST', body: formData
+      });
+      const data = await res.json();
+      if (data.ok) {
+        console.log('✅ Đã gửi đơn Premium + ảnh qua Telegram');
+        return { ok: true };
+      }
+      return { ok: false, error: data.description || 'unknown' };
+    } catch (err) {
+      return { ok: false, error: err.message };
+    }
+  }
+
+  console.log('💎 Premium Popup (2 cột) sẵn sàng');
+})();
