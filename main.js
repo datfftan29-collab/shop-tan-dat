@@ -1422,11 +1422,11 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
       placeholder: 'Ví dụ: aaa@gmail.com',
       inputType: 'email',
       packages: [
-        { name: 'Nâng Cấp Chính Chủ Không Kèm Canva Pro Edu 1 Năm', price: 37800, duration: '30 ngày' },
-        { name: 'Nâng Cấp Chính Chủ Không Kèm Canva Pro Edu 1 Năm', price: 102200, duration: '3 tháng' },
-        { name: 'Nâng Cấp Chính Chủ + Tặng Kèm Canva Pro Edu 1 Năm', price: 193200, duration: '6 tháng' },
-        { name: 'Nâng Cấp Chính Chủ + Tặng Kèm Canva Pro Edu 1 Năm', price: 322000, duration: '9 tháng' },
-        { name: 'Nâng Cấp Chính Chủ + Tặng Kèm Canva Pro Edu 1 Năm', price: 546000, duration: '12 tháng' }
+        { name: 'Nâng Cấp Chính Chủ Không Kèm Canva Pro Edu 1 Năm', price: 60000, duration: '30 ngày' },
+        { name: 'Nâng Cấp Chính Chủ Không Kèm Canva Pro Edu 1 Năm', price: 120000, duration: '90 ngày' },
+        { name: 'Nâng Cấp Chính Chủ + Tặng Kèm Canva Pro Edu 1 Năm', price: 220000, duration: '180 ngày' },
+        { name: 'Nâng Cấp Chính Chủ + Tặng Kèm Canva Pro Edu 1 Năm', price: 340000, duration: '360 ngày' },
+        { name: 'Nâng Cấp Chính Chủ + Tặng Kèm Canva Pro Edu 1 Năm', price: 570000, duration: '720 ngày' }
       ]
     },
     capcut: {
@@ -1438,14 +1438,13 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
       placeholder: 'Ví dụ: 0345085074',
       inputType: 'tel',
       packages: [
-        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Hạn Sử Dụng Chỉ 6-7 Ngày', price: 28000, duration: '7 ngày' },
-        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Hạn Sử Dụng Đủ 1 Tháng', price: 105000, duration: '1 tháng' },
-        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Đổi Tài Khoản Hàng Tháng', price: 301000, duration: '3 tháng' },
-        { name: 'Nâng Cấp Tài Khoản Capcut Chính Chủ Trên Tài Khoản Của Bạn - 3 Máy', price: 371000, duration: '6 tháng' },
-        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Đổi Tài Khoản Hàng Tháng', price: 595000, duration: '9 tháng' },
-        { name: 'Nâng Cấp Tài Khoản Capcut Chính Chủ Trên Tài Khoản Của Bạn - 2 Máy', price: 721000, duration: '12 tháng' },
-        { name: 'Tài Khoản Capcut Cá Nhân Riêng Tư Hạn 12 Tháng 2 Máy', price: 966000, duration: '12 tháng' },
-        { name: 'Nâng Cấp Tài Khoản Capcut Chính Chủ 12 Tháng 2 Máy', price: 1050000, duration: '12 tháng' }
+        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Hạn Sử Dụng Đủ 1 Tháng', price: 130000, duration: '30 ngày' },
+        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Đổi Tài Khoản Hàng Tháng', price: 320000, duration: '90 ngày' },
+        { name: 'Nâng Cấp Tài Khoản Capcut Chính Chủ Trên Tài Khoản Của Bạn - 3 Máy', price: 390000, duration: '90 ngày' },
+        { name: 'Tài Khoản Có Sẵn Dùng Riêng Tư 2 Máy - Đổi Tài Khoản Hàng Tháng', price: 620000, duration: '180 ngày' },
+        { name: 'Nâng Cấp Tài Khoản Capcut Chính Chủ Trên Tài Khoản Của Bạn - 2 Máy', price: 750000, duration: '180 ngày' },
+        { name: 'Tài Khoản Capcut Cá Nhân Riêng Tư Hạn 12 Tháng 2 Máy', price: 999000, duration: '360 ngày' },
+        { name: 'Nâng Cấp Tài Khoản Capcut Chính Chủ 12 Tháng 2 Máy', price: 1070000, duration: '360 ngày' }
       ]
     },
     canva: {
@@ -1457,12 +1456,12 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
       placeholder: 'Ví dụ: aaa@gmail.com',
       inputType: 'email',
       packages: [
-        { name: 'Canva Education', price: 23800, duration: '30 ngày' },
-        { name: 'Canva Pro Full Tính Năng', price: 119000, duration: '90 ngày' },
-        { name: 'Canva Education', price: 44800, duration: '180 ngày' },
-        { name: 'Canva Pro Full Tính Năng', price: 245000, duration: '180 ngày' },
-        { name: 'Canva Education', price: 61600, duration: '360 ngày' },
-        { name: 'Canva Pro Full Tính Năng', price: 357000, duration: '360 ngày' }
+        { name: 'Canva Education', price: 50000, duration: '360 ngày' },
+        { name: 'Canva Pro Full Tính Năng', price: 140000, duration: '360 ngày' },
+        { name: 'Canva Education', price: 60000, duration: '720 ngày' },
+        { name: 'Canva Pro Full Tính Năng', price: 260000, duration: '720 ngày' },
+        { name: 'Canva Education', price: 80000, duration: '1080 ngày' },
+        { name: 'Canva Pro Full Tính Năng', price: 375000, duration: '1080 ngày' }
       ]
     }
   };
@@ -1750,4 +1749,33 @@ const GOOGLE_CLIENT_ID = '472001144086-hai8a8e25s3fl56peedqna94rjchdju5.apps.goo
   }
 
   console.log('💎 Premium Popup (2 cột) sẵn sàng');
+})();
+/* =========================================================
+   🐱 DORAEMON XIN BÁNH RÁN — Ấn để mở QR thanh toán
+   ========================================================= */
+(function initDoraemon() {
+  const dora = document.getElementById('doraemonBtn');
+  if (!dora) return;
+
+  const qrModal  = document.getElementById('qrModal');
+  const qrViewer = document.getElementById('qrViewer');
+
+  // Hiện bong bóng "Cho tôi bánh rán!" sau 3s mỗi lần load
+  setTimeout(() => {
+    dora.classList.add('show-bubble');
+    setTimeout(() => dora.classList.remove('show-bubble'), 4000);
+  }, 3000);
+
+  // Ấn Doraemon → mở QR Vietcombank
+  dora.addEventListener('click', () => {
+    if (!qrModal || !qrViewer) {
+      showToast('⚠️ Không tìm thấy QR. Vui lòng liên hệ Zalo.');
+      return;
+    }
+    qrViewer.src = '45.JPG';  // QR Vietcombank
+    qrModal.classList.remove('hidden');
+    showToast('🍩 Quét QR để thanh toán nhé!');
+  });
+
+  console.log('🐱 Doraemon xin bánh rán đã sẵn sàng');
 })();
