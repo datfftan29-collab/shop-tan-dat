@@ -4897,3 +4897,150 @@ footer a:hover { color: #a78bfa; }
     font-size: 12.5px;
   }
 }
+/* =========================================================
+   🐱 DORAEMON XIN BÁNH RÁN — Nút thanh toán nhanh
+   Vị trí: CAO HƠN Chatway (không đè nhau)
+   ========================================================= */
+.doraemon-float {
+  position: fixed;
+  bottom: 180px;         /* ⬅️ Cao hơn Chatway (~20px) */
+  right: 20px;
+  z-index: 9998;         /* Dưới Chatway nhưng trên web */
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .25s;
+}
+
+.doraemon-float:hover { transform: scale(1.08); }
+.doraemon-float:active { transform: scale(.95); }
+
+/* Ảnh Doraemon */
+.doraemon-img {
+  width: 110px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, .55));
+  animation: doraBob 2.5s ease-in-out infinite;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Nhấp nhô lên xuống */
+@keyframes doraBob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+
+/* Bong bóng thoại */
+.doraemon-bubble {
+  position: relative;
+  background: #fff;
+  color: #1a1a1f;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 8px 12px;
+  border-radius: 16px;
+  border: 2px solid #22d3ee;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(6px) scale(.9);
+  transition: opacity .25s, transform .25s;
+  pointer-events: none;
+  animation: bubbleFloat 3s ease-in-out infinite;
+}
+
+/* Hiện bong bóng khi hover HOẶC khi có class show-bubble */
+.doraemon-float:hover .doraemon-bubble,
+.doraemon-float.show-bubble .doraemon-bubble {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Đuôi bong bóng (viền cyan) */
+.doraemon-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #22d3ee;
+}
+
+/* Đuôi bong bóng (ruột trắng) */
+.doraemon-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid #fff;
+  z-index: 1;
+}
+
+/* Bong bóng bay nhẹ */
+@keyframes bubbleFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-4px) scale(1.02); }
+}
+
+/* Vòng sáng pulse quanh Doraemon */
+.doraemon-ring {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 3px solid rgba(34, 211, 238, .6);
+  animation: doraRing 2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes doraRing {
+  0%   { transform: translateX(-50%) scale(.7); opacity: .8; }
+  100% { transform: translateX(-50%) scale(1.8); opacity: 0; }
+}
+
+/* =========================================================
+   📱 MOBILE — Thu nhỏ + điều chỉnh vị trí
+   ========================================================= */
+@media (max-width: 560px) {
+  .doraemon-float {
+    bottom: 160px;
+    right: 12px;
+  }
+  .doraemon-img {
+    width: 80px;
+  }
+  .doraemon-bubble {
+    font-size: 10px;
+    padding: 6px 9px;
+  }
+  .doraemon-ring {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* =========================================================
+   ⚠️ Khi có modal mở — làm mờ Doraemon để không đè
+   ========================================================= */
+body.modal-open .doraemon-float {
+  opacity: .25;
+  pointer-events: none;
+}
